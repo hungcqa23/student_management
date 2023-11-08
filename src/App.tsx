@@ -1,12 +1,8 @@
-function App() {
-  const a = 'Hello';
+import useRouteElement from './useRouteElement';
 
-  console.log(a);
-  return (
-    <>
-      <h1 className='font-bold text-gray-300'>Hello</h1>
-    </>
-  );
+function App() {
+  const routeElement = useRouteElement();
+  return <div>{routeElement}</div>;
 }
 
 export default App;
