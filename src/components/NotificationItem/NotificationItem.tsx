@@ -8,7 +8,7 @@ export default function NotificationItem(props: NotificationItemProps) {
   const { role } = props;
 
   return (
-    <div className='rounded-lg bg-gray-800 px-4 py-3'>
+    <div className='rounded-lg bg-neutral-800 px-4 py-3'>
       <p className='text-base tracking-tighter text-white'>Thông báo học phí năm học 2023 - 2024</p>
 
       <div

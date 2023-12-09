@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 import ButtonNav from '../ButtonNav';
 
 import homeActive from '/src/assets/icons/homeActive.svg';
-import khoa from '/src/assets/icons/khoa.svg';
+import faculty from '/src/assets/icons/faculty.svg';
 import student from '/src/assets/icons/student.svg';
 import teacher from '/src/assets/icons/teacher.svg';
 import classes from '/src/assets/icons/classes.svg';
@@ -19,7 +19,7 @@ const Links = [
   {
     to: '/khoa',
     text: 'Khoa',
-    svg: khoa
+    svg: faculty
   },
   {
     to: '/students',

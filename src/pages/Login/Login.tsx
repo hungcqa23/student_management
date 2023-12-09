@@ -26,18 +26,18 @@ export default function Login() {
   };
 
   return (
-    <form className='flex flex-col' onSubmit={onSubmit}>
+    <form className='flex w-96 flex-col text-sm md:text-base' onSubmit={onSubmit}>
       <div className='flex justify-center'>
         <img src='/src/assets/icons/logo.svg' alt='Logo' />
       </div>
 
       <div className='mt-6 flex flex-col gap-4'>
         <div>
-          <label className='mb-1 block text-base font-medium text-white' htmlFor='username'>
+          <label className='mb-1 block font-medium text-white' htmlFor='username'>
             Tên tài khoản
           </label>
           <Input
-            classNameInput='block rounded-lg py-3 text-base pl-3 font-medium w-full focus:outline-none'
+            classNameInput='block rounded-lg py-3 pl-3 font-medium w-full focus:outline-none'
             placeholder='Nhập tài khoản ở đây...'
             id='username'
             autoFocus={true}
@@ -47,7 +47,7 @@ export default function Login() {
         </div>
 
         <div>
-          <label className='mb-1 block text-base font-medium text-white' htmlFor='password'>
+          <label className='mb-1 block font-medium text-white' htmlFor='password'>
             Mật khẩu
           </label>
           <Input
@@ -66,7 +66,7 @@ export default function Login() {
       >
         Quên mật khẩu
       </Link>
-      <Button className='w-full rounded-md bg-amber-300 py-3'>
+      <Button className='w-full rounded-md bg-amber-400 py-3'>
         <p className='font-semibold uppercase text-black'>Đăng nhập</p>
       </Button>
     </form>

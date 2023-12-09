@@ -15,8 +15,8 @@ export default function ButtonNav(props: NavButtonProps) {
         <img src={svg} alt={`${text} logo`} className='h-5 w-5' />
       </div>
       <p
-        className={`text-base font-normal text-gray-400 ${
-          isActive ? 'font-bold text-amber-300' : ''
+        className={`text-base font-normal ${
+          isActive ? 'font-semibold text-amber-300' : 'text-gray-400'
         }`}
       >
         {text}
