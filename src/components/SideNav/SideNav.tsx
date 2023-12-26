@@ -2,13 +2,10 @@ import { Link } from 'react-router-dom';
 import ButtonNav from '../ButtonNav';
 
 import homeActive from '/src/assets/icons/homeActive.svg';
-import faculty from '/src/assets/icons/faculty.svg';
 import student from '/src/assets/icons/student.svg';
 import teacher from '/src/assets/icons/teacher.svg';
 import classes from '/src/assets/icons/classes.svg';
 import course from '/src/assets/icons/course.svg';
-import account from '/src/assets/icons/account.svg';
-import year from '/src/assets/icons/year.svg';
 
 const Links = [
   {
@@ -17,44 +14,39 @@ const Links = [
     svg: homeActive
   },
   {
-    to: '/khoa',
-    text: 'Khoa',
-    svg: faculty
-  },
-  {
-    to: '/students',
-    text: 'Sinh viên',
-    svg: student
-  },
-  {
-    to: '/teachers',
-    text: 'Giảng viên',
-    svg: teacher
-  },
-  {
     to: '/classes',
     text: 'Lớp học',
     svg: classes
   },
   {
-    to: '/subjects',
-    text: 'Môn học',
+    to: '/grades',
+    text: 'Điểm',
+    svg: classes
+  },
+  {
+    to: '/classes',
+    text: 'Điểm danh',
+    svg: classes
+  },
+  {
+    to: '/notifications',
+    text: 'Thông báo',
     svg: course
-  },
-  {
-    to: '/years',
-    text: 'Năm học',
-    svg: year
-  },
-  {
-    to: '/accounts',
-    text: 'Tài khoản',
-    svg: account
   }
+  // {
+  //   to: '/years',
+  //   text: 'Năm học',
+  //   svg: year
+  // }
+  // {
+  //   to: '/accounts',
+  //   text: 'Tài khoản',
+  //   svg: account
+  // }
 ];
 export default function SideNav() {
   return (
-    <nav className='fixed left-0 top-0 flex h-screen w-60 flex-col items-center bg-black px-2'>
+    <nav className='fixed left-0 top-0 flex h-screen w-60 flex-col items-center bg-neutral-800 px-2'>
       <Link to='/' className='mb-4 block w-full text-center'>
         <img src='/src/assets/icons/logo.svg' alt='' className='inline h-24 w-24' />
       </Link>
