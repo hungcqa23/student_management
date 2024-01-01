@@ -1,3 +1,6 @@
+import { ExitIcon } from '@radix-ui/react-icons';
+import { Button } from '../ui/button';
+
 export default function Header() {
   return (
     <header className='fixed left-60 right-0 top-0 bg-neutral-800'>
@@ -11,7 +14,7 @@ export default function Header() {
           </p>
         </div>
         <div className='flex items-center gap-3'>
-          <svg
+          {/* <svg
             width={19}
             height={19}
             viewBox='0 0 19 19'
@@ -34,7 +37,10 @@ export default function Header() {
           </svg>
           <button className='inline-block text-sm font-bold text-zinc-300 hover:underline'>
             Đăng xuất
-          </button>
+          </button> */}
+          <Button variant={'outline'} className='flex w-32 gap-2'>
+            <ExitIcon /> Đăng xuất
+          </Button>
         </div>
       </div>
     </header>

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 export default function Search({
   query,
   onChange
@@ -6,11 +6,9 @@ export default function Search({
   query?: string;
   onChange: React.Dispatch<React.SetStateAction<string>>;
 }) {
-  const [filter, setFilter] = useState<string>('');
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === 'Escape') {
-        setFilter('');
         onChange('');
       }
     };
@@ -20,18 +18,13 @@ export default function Search({
     };
   }, [onChange]);
   return (
-    <div className='flex w-72 justify-between rounded-lg border-2 border-neutral-400 bg-white px-4 py-2 text-base font-normal outline-none transition duration-500'>
+    <div className='flex w-72 justify-between rounded-lg border-2 border-black bg-white px-4 py-2 text-base font-normal outline-none transition duration-500'>
       <div className='flex w-full items-center'>
         <input
-          value={filter}
-          onChange={e => setFilter(e.target.value)}
-          onKeyDown={e => {
-            if (e.key === 'Enter') {
-              onChange(filter);
-            }
-          }}
+          value={query}
+          onChange={e => onChange(e.target.value)}
           placeholder='Tìm kiếm tên lớp'
-          className='grow bg-white font-light text-black outline-none focus:text-neutral-400 focus:outline-none'
+          className='grow bg-white text-sm text-black outline-none focus:outline-none'
           maxLength={100}
         />
         {query === '' && (
@@ -43,9 +36,8 @@ export default function Search({
 
       {query !== '' && (
         <button
-          className='hover:pointer flex h-6 shrink-0 basis-6 cursor-pointer items-center justify-center rounded-full bg-gray-500'
+          className='hover:pointer flex h-4 w-4 shrink-0 basis-6 cursor-pointer items-center justify-center rounded-full bg-gray-500'
           onClick={() => {
-            setFilter('');
             onChange('');
           }}
         >

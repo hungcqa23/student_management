@@ -18,7 +18,9 @@ const path = {
   blocked_accounts: 'blocked_accounts',
   account_password: 'account_password',
   all: '*',
-  id: ':id'
+  id: ':id',
+  course: 'courses',
+  add_course: 'course/add-course'
 } as const;
 
 export default path;

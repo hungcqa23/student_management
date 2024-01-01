@@ -8,7 +8,7 @@ export default function MainLayout() {
       <SideNav />
       <Header />
       <div className='ml-60 mt-[6rem] flex h-[calc(100vh-6rem)] w-[calc(100%-15rem)] items-center justify-center overflow-x-hidden overflow-y-hidden'>
-        <div className='h-[calc(100%-2rem)] w-[calc(100%-2rem)] overflow-y-auto overflow-x-hidden rounded-2xl bg-white p-10'>
+        <div className='h-[calc(100%-2rem)] w-[calc(100%-2rem)] overflow-x-hidden overflow-y-hidden rounded-2xl bg-white p-10'>
           <Outlet />
         </div>
       </div>

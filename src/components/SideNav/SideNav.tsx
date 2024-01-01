@@ -24,7 +24,7 @@ const Links = [
     svg: classes
   },
   {
-    to: '/classes',
+    to: '/attendances',
     text: 'Điểm danh',
     svg: classes
   },
@@ -33,16 +33,6 @@ const Links = [
     text: 'Thông báo',
     svg: course
   }
-  // {
-  //   to: '/years',
-  //   text: 'Năm học',
-  //   svg: year
-  // }
-  // {
-  //   to: '/accounts',
-  //   text: 'Tài khoản',
-  //   svg: account
-  // }
 ];
 export default function SideNav() {
   return (

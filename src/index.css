@@ -4,12 +4,12 @@
 
 body {
   font-family: 'Inter', sans-serif;
-  font-weight: 300;
+  font-weight: 400;
 }
 
 /* width */
 ::-webkit-scrollbar {
-  width: 10px;
+  width: 8px;
 }
 
 /* Track */
@@ -20,7 +20,7 @@ body {
 /* Handle */
 ::-webkit-scrollbar-thumb {
   background: #888;
-  border-radius: 5px;
+  border-radius: 6px;
 }
 
 /* Handle on hover */

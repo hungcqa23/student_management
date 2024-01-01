@@ -9,6 +9,9 @@ import Home from './pages/Home';
 import ResetPassword from './pages/ResetPassword';
 import Register from './pages/Register';
 import path from './constants/path';
+import Course from './pages/Course';
+import AddCourse from './pages/AddCourse';
+import CourseInfo from './pages/course_info';
 
 const isAuthenticated = true;
 function ProtectedRoute() {
@@ -56,6 +59,18 @@ export default function useRouteElement() {
             {
               path: path.home,
               element: <Home />
+            },
+            {
+              path: path.course,
+              element: <Course />
+            },
+            {
+              path: path.course + '/:id',
+              element: <CourseInfo />
+            },
+            {
+              path: path.add_course,
+              element: <AddCourse />
             }
           ]
         }
