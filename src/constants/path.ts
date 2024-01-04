@@ -14,13 +14,11 @@ const path = {
   notifications: 'notifications',
   search: 'search',
   accounts: 'accounts',
-  emails: 'emails',
-  blocked_accounts: 'blocked_accounts',
-  account_password: 'account_password',
   all: '*',
   id: ':id',
   course: 'courses',
-  add_course: 'course/add-course'
+  add_course: 'course/add-course',
+  student: 'students'
 } as const;
 
 export default path;

@@ -1,29 +1,46 @@
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import Input from '../../components/Input';
 import Button from '../../components/Button';
-import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { Schema, schema } from '@/utils/rules';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { useMutation } from '@tanstack/react-query';
+import authApi from '@/apis/auth.api';
+import { toast } from 'react-toastify';
+import { useAppContext } from '@/contexts/app.contexts';
 
+const loginSchema = schema.pick(['email', 'password']);
+type FormData = Omit<Schema, 'confirmPassword' | 'username'>;
 export default function Login() {
-  const [username, setUsername] = useState<string>('');
-  const [password, setPassword] = useState<string>('');
-
-  const onChangeUsername = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setUsername(e.target.value);
-  };
-
-  const onChangePassword = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setPassword(e.target.value);
-  };
-
-  const navigate = useNavigate();
-  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    if (username === 'admin' && password === 'admin') {
-      navigate('/');
-    } else {
-      alert('Đăng nhập thất bại');
-    }
-  };
+  const { setIsAuthenticated, setProfile } = useAppContext();
+  const {
+    handleSubmit,
+    register,
+    formState: { errors }
+  } = useForm<FormData>({
+    resolver: yupResolver(loginSchema)
+  });
+  const loginMutation = useMutation({
+    mutationFn: (body: FormData) => authApi.login(body)
+  });
+  const onSubmit = handleSubmit(data => {
+    loginMutation.mutate(data, {
+      onSuccess: data => {
+        toast.success('Successfully login!', {
+          position: toast.POSITION.TOP_RIGHT
+        });
+        setTimeout(() => {
+          setIsAuthenticated(true);
+          setProfile(data.data?.data.user);
+        }, 1000);
+      },
+      onError: () => {
+        toast.error('Login failed!', {
+          position: toast.POSITION.TOP_RIGHT
+        });
+      }
+    });
+  });
 
   return (
     <form className='flex w-96 flex-col text-sm md:text-base' onSubmit={onSubmit}>
@@ -37,12 +54,13 @@ export default function Login() {
             Tên tài khoản
           </label>
           <Input
-            classNameInput='block rounded-lg py-3 pl-3 font-medium w-full focus:outline-none'
-            placeholder='Nhập tài khoản ở đây...'
-            id='username'
+            placeholder='Nhập email ở đây...'
+            id='email'
             autoFocus={true}
-            autoComplete='off'
-            onChange={onChangeUsername}
+            autoComplete='on'
+            name='email'
+            register={register}
+            errorMessage={errors.email?.message}
           />
         </div>
 
@@ -54,8 +72,9 @@ export default function Login() {
             placeholder='Nhập mật khẩu ở đây...'
             id='password'
             type='password'
-            autoComplete='on'
-            onChange={onChangePassword}
+            name='password'
+            register={register}
+            errorMessage={errors.password?.message}
           />
         </div>
       </div>
@@ -66,7 +85,7 @@ export default function Login() {
       >
         Quên mật khẩu
       </Link>
-      <Button className='w-full rounded-md bg-amber-400 py-3'>
+      <Button className='w-full rounded-md bg-amber-400 py-2 hover:bg-amber-400/90' type='submit'>
         <p className='font-semibold uppercase text-black'>Đăng nhập</p>
       </Button>
     </form>

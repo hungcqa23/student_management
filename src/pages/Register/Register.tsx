@@ -62,7 +62,7 @@ export default function Register() {
         </div>
       </div>
 
-      <Button className='w-full rounded-md bg-amber-400 py-3'>
+      <Button className='w-full rounded bg-amber-400 py-2'>
         <p className='font-semibold uppercase text-black'>Đăng ký</p>
       </Button>
     </form>

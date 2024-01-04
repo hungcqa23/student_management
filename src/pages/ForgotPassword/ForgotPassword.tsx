@@ -18,7 +18,7 @@ export default function ForgotPassword() {
         autoComplete='off'
       />
 
-      <Button className='w-full rounded-md bg-amber-400 py-3'>
+      <Button className='w-full rounded bg-amber-400 py-2 hover:bg-amber-400/90'>
         <p className='font-bold uppercase text-black'>Gửi</p>
       </Button>
     </form>

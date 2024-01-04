@@ -12,13 +12,16 @@ import path from './constants/path';
 import Course from './pages/Course';
 import AddCourse from './pages/AddCourse';
 import CourseInfo from './pages/course_info';
+import { useAppContext } from './contexts/app.contexts';
+import StudentInfo from './pages/student_info';
 
-const isAuthenticated = true;
 function ProtectedRoute() {
+  const { isAuthenticated } = useAppContext();
   return isAuthenticated ? <Outlet /> : <Navigate to='/login' />;
 }
 
 function RejectedRoute() {
+  const { isAuthenticated } = useAppContext();
   return !isAuthenticated ? <Outlet /> : <Navigate to='/' />;
 }
 const AuthRouteChildren: RouteObject[] = [
@@ -71,6 +74,10 @@ export default function useRouteElement() {
             {
               path: path.add_course,
               element: <AddCourse />
+            },
+            {
+              path: path.student + '/:id',
+              element: <StudentInfo />
             }
           ]
         }

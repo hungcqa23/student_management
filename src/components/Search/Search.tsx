@@ -28,15 +28,15 @@ export default function Search({
           maxLength={100}
         />
         {query === '' && (
-          <span className='flex shrink-0 items-center justify-center border-l border-gray-200 pl-2'>
-            <img src='./src/assets/icons/search.png' alt='' />
+          <span className='flex h-5 shrink-0 items-center justify-center border-l border-gray-200 pl-2'>
+            <img src='/src/assets/icons/search.png' alt='' />
           </span>
         )}
       </div>
 
       {query !== '' && (
         <button
-          className='hover:pointer flex h-4 w-4 shrink-0 basis-6 cursor-pointer items-center justify-center rounded-full bg-gray-500'
+          className='flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-gray-500'
           onClick={() => {
             onChange('');
           }}

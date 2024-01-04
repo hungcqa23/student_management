@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { Outlet, useMatch, useParams } from 'react-router-dom';
+import { Outlet, useMatch } from 'react-router-dom';
 
 export default function AuthLayout() {
   const matchPath = useMatch('/:path')?.params.path;
@@ -21,7 +21,7 @@ export default function AuthLayout() {
           </p>
           {matchPath === 'login' && (
             <Link to='/sign-up'>
-              <button className='h-12 w-36 rounded-lg bg-amber-400 font-bold text-black'>
+              <button className='h-10 w-32  rounded-lg bg-amber-400 font-bold text-black hover:bg-amber-400/90'>
                 Đăng ký
               </button>
             </Link>

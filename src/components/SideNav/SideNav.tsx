@@ -14,7 +14,7 @@ const Links = [
     svg: homeActive
   },
   {
-    to: '/classes',
+    to: '/courses',
     text: 'Lớp học',
     svg: classes
   },

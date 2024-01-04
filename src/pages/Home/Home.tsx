@@ -20,11 +20,12 @@ export default function Home() {
   return (
     <>
       <div className='mb-4 flex items-center justify-between'>
-        <h1 className='text-2xl font-bold uppercase text-black'>Lớp học</h1>
-        <Button variant={'outline'} className='border-2' asChild>
+        <h1 className='text-2xl font-bold uppercase'>Lớp học</h1>
+        <Button variant='outline' asChild>
           <Link to={path.add_course}>Tạo lớp mới</Link>
         </Button>
       </div>
+
       <Search onChange={setFilter} query={filter} />
 
       <div className='mt-4 max-h-[calc(100%-6rem)] overflow-y-auto'>
