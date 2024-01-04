@@ -67,7 +67,7 @@ export default function CourseInfo() {
 
       <Search onChange={setFilter} query={filter} />
 
-      <div className='mt-4 max-h-[calc(100%-6rem)] overflow-y-auto'>
+      <div className='mt-4 max-h-[calc(100%-10rem)] overflow-y-auto'>
         <Table>
           <TableCaption>Danh sách lớp học</TableCaption>
           <TableHeader className='border-b-none'>

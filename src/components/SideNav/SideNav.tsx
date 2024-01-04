@@ -20,7 +20,7 @@ const Links = [
   },
   {
     to: '/grades',
-    text: 'Điểm',
+    text: 'Nhập Điểm',
     svg: classes
   },
   {

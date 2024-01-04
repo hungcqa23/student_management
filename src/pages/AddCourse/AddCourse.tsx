@@ -1,3 +1,10 @@
+import authApi from '@/apis/auth.api';
+import { Button } from '@/components/ui/button';
+import { Cross1Icon, Cross2Icon } from '@radix-ui/react-icons';
+import { useMutation } from '@tanstack/react-query';
+import { useFieldArray, useForm } from 'react-hook-form';
+import { toast } from 'react-toastify';
+
 const optionsDate = [
   {
     value: 'monday',
@@ -28,14 +35,58 @@ const optionsDate = [
     label: 'Chủ nhật'
   }
 ];
+interface FormData {
+  courseId: string;
+  courseName: string;
+  courseStartDate: string;
+  courseEndDate: string;
+  courseNumberOfSession: string;
+  courseMoment: {
+    dayOfWeek: string;
+    timeStart: string;
+    timeEnd: string;
+  }[];
+}
 export default function AddCourse() {
+  const {
+    register,
+    handleSubmit,
+    control,
+    formState: { errors }
+  } = useForm<FormData>({});
+  const { fields, append, remove } = useFieldArray({
+    name: 'courseMoment',
+    shouldUnregister: true,
+    control,
+    rules: {
+      required: 'Hãy chọn ít nhất 1 buổi'
+    }
+  });
+  const loginMutation = useMutation({
+    mutationFn: (data: FormData) =>
+      authApi.login({
+        email: data.courseId,
+        password: data.courseName
+      })
+  });
+
+  const onSubmit = handleSubmit((data: FormData) => {
+    loginMutation.mutate(data, {
+      onSuccess: data => {
+        toast.success('Successfully login!', {
+          position: toast.POSITION.TOP_RIGHT
+        });
+      }
+    });
+  });
+
   return (
-    <>
+    <form onSubmit={onSubmit}>
       <div className='mb-4 flex items-center justify-between'>
         <h1 className='text-2xl font-bold uppercase text-black'>Thông tin lớp học</h1>
-        <button className='relative h-10 w-36 rounded-md bg-green-300'>
-          <div className='text-base font-extrabold text-zinc-900'>Tạo lớp</div>
-        </button>
+        <Button className='w-32' variant={'outline'} type='submit'>
+          Tạo lớp mới
+        </Button>
       </div>
 
       <div className='flex gap-16'>
@@ -49,7 +100,7 @@ export default function AddCourse() {
           <input
             type='text'
             id='first_name'
-            className='block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500'
+            className='block w-full rounded border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500'
             placeholder='John'
             required
           />
@@ -65,7 +116,7 @@ export default function AddCourse() {
           <input
             type='text'
             id='first_name'
-            className='block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500'
+            className='block w-full rounded border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500'
             placeholder='John'
             required
           />
@@ -83,7 +134,7 @@ export default function AddCourse() {
           <input
             type='text'
             id='first_name'
-            className='block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500'
+            className='block w-full rounded border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500'
             placeholder='John'
             required
           />
@@ -99,7 +150,7 @@ export default function AddCourse() {
           <input
             type='text'
             id='first_name'
-            className='block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500'
+            className='block w-full rounded border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500'
             placeholder='John'
             required
           />
@@ -115,7 +166,7 @@ export default function AddCourse() {
           <input
             type='text'
             id='first_name'
-            className='block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500'
+            className='block w-full rounded border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500'
             placeholder='John'
             required
           />
@@ -133,7 +184,7 @@ export default function AddCourse() {
           <input
             type='text'
             id='first_name'
-            className='block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500'
+            className='block w-full rounded border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500'
             placeholder='John'
             required
           />
@@ -142,200 +193,97 @@ export default function AddCourse() {
 
       <span className='my-2 block text-sm font-medium text-gray-900'>Thời gian học</span>
 
-      <ul className='flex flex-col gap-2'>
-        <div className='flex gap-10'>
-          <div className='flex items-center gap-2'>
-            <label
-              htmlFor='first_name'
-              className='block text-sm font-medium text-gray-900 dark:text-white'
-            >
-              Ngày học:
-            </label>
-            <select id='cars' name='cars' className='h-10 w-36 rounded border-2 border-gray-200'>
-              {optionsDate.map(option => (
-                <option key={option.value} value={option.value}>
-                  {option.label}
+      <ul className='flex max-h-40 flex-col gap-2 overflow-y-auto'>
+        {fields.map((field, index) => (
+          <div className='flex items-center gap-8' key={field.id}>
+            <div className='flex items-center gap-2'>
+              <label
+                htmlFor='first_name'
+                className='block text-sm font-medium text-gray-900 dark:text-white'
+              >
+                Ngày học:
+              </label>
+              <select
+                className='h-9 w-32 rounded border-2 border-gray-200 text-sm'
+                {...register(`courseMoment.${index}.dayOfWeek`)}
+              >
+                <option disabled={true} value=''>
+                  Chọn ngày
                 </option>
-              ))}
-            </select>
-          </div>
+                {optionsDate.map(option => (
+                  <option key={option.value} value={option.value}>
+                    {option.label}
+                  </option>
+                ))}
+              </select>
+            </div>
 
-          <div className='flex items-center gap-2'>
-            <label
-              htmlFor='first_name'
-              className='block text-sm font-medium text-gray-900 dark:text-white'
-            >
-              Ngày học:
-            </label>
-            <select id='cars' name='cars' className='h-10 w-36 rounded border-2 border-gray-200'>
-              <option value='volvo'>Volvo</option>
-              <option value='saab'>Saab</option>
-              <option value='fiat'>Fiat</option>
-              <option value='audi'>Audi</option>
-            </select>
-          </div>
+            <div className='flex items-center gap-2'>
+              <label
+                htmlFor='first_name'
+                className='block text-sm font-medium text-gray-900 dark:text-white'
+              >
+                Giờ học:
+              </label>
 
-          <div className='flex items-center gap-2'>
-            <label
-              htmlFor='first_name'
-              className='block text-sm font-medium text-gray-900 dark:text-white'
-            >
-              Ngày học:
-            </label>
-            <select id='cars' name='cars' className='h-10 w-36 rounded border-2 border-gray-200'>
-              <option value='volvo'>Volvo</option>
-              <option value='saab'>Saab</option>
-              <option value='fiat'>Fiat</option>
-              <option value='audi'>Audi</option>
-            </select>
-          </div>
-        </div>
-        <div className='flex gap-10'>
-          <div className='flex items-center gap-2'>
-            <label
-              htmlFor='first_name'
-              className='block text-sm font-medium text-gray-900 dark:text-white'
-            >
-              Ngày học:
-            </label>
-            <select id='cars' name='cars' className='h-10 w-36 rounded border-2 border-gray-200'>
-              {optionsDate.map(option => (
-                <option key={option.value} value={option.value}>
-                  {option.label}
+              <select
+                className='h-9 w-32 rounded border-2 border-gray-200 text-sm'
+                {...register(`courseMoment.${index}.timeStart`)}
+              >
+                <option value='' disabled>
+                  Chọn giờ học
                 </option>
-              ))}
-            </select>
-          </div>
+                <option value='volvo'>Volvo</option>
+                <option value='saab'>Saab</option>
+                <option value='fiat'>Fiat</option>
+                <option value='audi'>Audi</option>
+              </select>
+            </div>
 
-          <div className='flex items-center gap-2'>
-            <label
-              htmlFor='first_name'
-              className='block text-sm font-medium text-gray-900 dark:text-white'
-            >
-              Ngày học:
-            </label>
-            <select id='cars' name='cars' className='h-10 w-36 rounded border-2 border-gray-200'>
-              <option value='volvo'>Volvo</option>
-              <option value='saab'>Saab</option>
-              <option value='fiat'>Fiat</option>
-              <option value='audi'>Audi</option>
-            </select>
-          </div>
-
-          <div className='flex items-center gap-2'>
-            <label
-              htmlFor='first_name'
-              className='block text-sm font-medium text-gray-900 dark:text-white'
-            >
-              Ngày học:
-            </label>
-            <select id='cars' name='cars' className='h-10 w-36 rounded border-2 border-gray-200'>
-              <option value='volvo'>Volvo</option>
-              <option value='saab'>Saab</option>
-              <option value='fiat'>Fiat</option>
-              <option value='audi'>Audi</option>
-            </select>
-          </div>
-        </div>
-        <div className='flex gap-10'>
-          <div className='flex items-center gap-2'>
-            <label
-              htmlFor='first_name'
-              className='block text-sm font-medium text-gray-900 dark:text-white'
-            >
-              Ngày học:
-            </label>
-            <select id='cars' name='cars' className='h-10 w-36 rounded border-2 border-gray-200'>
-              {optionsDate.map(option => (
-                <option key={option.value} value={option.value}>
-                  {option.label}
+            <div className='flex items-center gap-2'>
+              <label
+                htmlFor='first_name'
+                className='block text-sm font-medium text-gray-900 dark:text-white'
+              >
+                Giờ kết thúc:
+              </label>
+              <select
+                className='h-9 w-32 rounded border-2 border-gray-200 text-sm'
+                {...register(`courseMoment.${index}.timeStart`)}
+              >
+                <option value='' disabled>
+                  Chọn giờ học
                 </option>
-              ))}
-            </select>
-          </div>
+                <option value='volvo'>Volvo</option>
+                <option value='saab'>Saab</option>
+                <option value='fiat'>Fiat</option>
+                <option value='audi'>Audi</option>
+              </select>
+            </div>
 
-          <div className='flex items-center gap-2'>
-            <label
-              htmlFor='first_name'
-              className='block text-sm font-medium text-gray-900 dark:text-white'
+            <Button
+              onClick={() => remove(index)}
+              size='icon'
+              variant={'ghost'}
+              className='h-8 w-8 rounded-full'
+              type='button'
             >
-              Ngày học:
-            </label>
-            <select id='cars' name='cars' className='h-10 w-36 rounded border-2 border-gray-200'>
-              <option value='volvo'>Volvo</option>
-              <option value='saab'>Saab</option>
-              <option value='fiat'>Fiat</option>
-              <option value='audi'>Audi</option>
-            </select>
+              <Cross2Icon className='h-4 w-4' />
+            </Button>
           </div>
-
-          <div className='flex items-center gap-2'>
-            <label
-              htmlFor='first_name'
-              className='block text-sm font-medium text-gray-900 dark:text-white'
-            >
-              Ngày học:
-            </label>
-            <select id='cars' name='cars' className='h-10 w-36 rounded border-2 border-gray-200'>
-              <option value='volvo'>Volvo</option>
-              <option value='saab'>Saab</option>
-              <option value='fiat'>Fiat</option>
-              <option value='audi'>Audi</option>
-            </select>
-          </div>
-        </div>
-        <div className='flex gap-10'>
-          <div className='flex items-center gap-2'>
-            <label
-              htmlFor='first_name'
-              className='block text-sm font-medium text-gray-900 dark:text-white'
-            >
-              Ngày học:
-            </label>
-            <select id='cars' name='cars' className='h-10 w-36 rounded border-2 border-gray-200'>
-              {optionsDate.map(option => (
-                <option key={option.value} value={option.value}>
-                  {option.label}
-                </option>
-              ))}
-            </select>
-          </div>
-
-          <div className='flex items-center gap-2'>
-            <label
-              htmlFor='first_name'
-              className='block text-sm font-medium text-gray-900 dark:text-white'
-            >
-              Ngày học:
-            </label>
-            <select id='cars' name='cars' className='h-10 w-36 rounded border-2 border-gray-200'>
-              <option value='volvo'>Volvo</option>
-              <option value='saab'>Saab</option>
-              <option value='fiat'>Fiat</option>
-              <option value='audi'>Audi</option>
-            </select>
-          </div>
-
-          <div className='flex items-center gap-2'>
-            <label
-              htmlFor='first_name'
-              className='block text-sm font-medium text-gray-900 dark:text-white'
-            >
-              Ngày học:
-            </label>
-            <select id='cars' name='cars' className='h-10 w-36 rounded border-2 border-gray-200'>
-              <option value='volvo'>Volvo</option>
-              <option value='saab'>Saab</option>
-              <option value='fiat'>Fiat</option>
-              <option value='audi'>Audi</option>
-            </select>
-          </div>
-        </div>
+        ))}
       </ul>
 
-      <button className='mt-4 h-10 w-32 rounded-md bg-yellow-500 font-semibold text-black  hover:opacity-90'>
+      <p className='my-2 block text-sm font-medium text-red-500'>
+        {errors.courseMoment?.root?.message}
+      </p>
+      <Button
+        onClick={() => append({ dayOfWeek: '', timeStart: '', timeEnd: '' })}
+        className='mt-4 h-10 w-32 rounded-md font-semibold'
+        type='button'
+      >
         Thêm ngày học
-      </button>
-    </>
+      </Button>
+    </form>
   );
 }

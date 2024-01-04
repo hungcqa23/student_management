@@ -14,6 +14,8 @@ import AddCourse from './pages/AddCourse';
 import CourseInfo from './pages/course_info';
 import { useAppContext } from './contexts/app.contexts';
 import StudentInfo from './pages/student_info';
+import Notification from './pages/notification';
+import Grade from './pages/grade';
 
 function ProtectedRoute() {
   const { isAuthenticated } = useAppContext();
@@ -68,16 +70,24 @@ export default function useRouteElement() {
               element: <Course />
             },
             {
-              path: path.course + '/:id',
-              element: <CourseInfo />
-            },
-            {
               path: path.add_course,
               element: <AddCourse />
             },
             {
+              path: path.course + '/:id',
+              element: <CourseInfo />
+            },
+            {
               path: path.student + '/:id',
               element: <StudentInfo />
+            },
+            {
+              path: path.notifications,
+              element: <Notification />
+            },
+            {
+              path: path.grades,
+              element: <Grade />
             }
           ]
         }

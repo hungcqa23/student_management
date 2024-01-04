@@ -8,7 +8,6 @@ const path = {
   register: '/sign-up',
   logout: '/logout',
   messages: 'messages',
-  who_can_see_your_content: 'who_can_see_your_content',
   forgot_password: 'forgot-password',
   reset_password: 'reset-password',
   notifications: 'notifications',
@@ -17,8 +16,9 @@ const path = {
   all: '*',
   id: ':id',
   course: 'courses',
-  add_course: 'course/add-course',
-  student: 'students'
+  add_course: 'courses/add-course',
+  student: 'students',
+  grades: 'grades'
 } as const;
 
 export default path;
