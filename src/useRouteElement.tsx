@@ -16,6 +16,8 @@ import { useAppContext } from './contexts/app.contexts';
 import StudentInfo from './pages/student_info';
 import Notification from './pages/notification';
 import Grade from './pages/grade';
+import AddGrade from './pages/add_grade';
+import AddStudent from './pages/add_student';
 
 function ProtectedRoute() {
   const { isAuthenticated } = useAppContext();
@@ -88,6 +90,14 @@ export default function useRouteElement() {
             {
               path: path.grades,
               element: <Grade />
+            },
+            {
+              path: path.grades + '/:id',
+              element: <AddGrade />
+            },
+            {
+              path: path.student + '/add_student',
+              element: <AddStudent />
             }
           ]
         }

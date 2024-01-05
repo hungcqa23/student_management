@@ -15,13 +15,14 @@ import { Pencil, Trash2 } from 'lucide-react';
 import Dialog from '@/components/Dialog';
 import Modal from '@/components/Modal';
 import { Link } from 'react-router-dom';
+import Header from '@/components/ui/header';
 
 export default function CourseInfo() {
   const [filter, setFilter] = useState<string>('');
   const [openDelete, setOpenDelete] = useState<boolean>(false);
   return (
     <>
-      <h1 className='mb-4 text-2xl font-bold uppercase text-black'>Thông tin lớp học</h1>
+      <Header header='THÔNG TIN LỚP' />
 
       <div className='mb-2 flex justify-between'>
         <div className='flex flex-col gap-2'>

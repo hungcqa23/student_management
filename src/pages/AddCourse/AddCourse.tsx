@@ -1,6 +1,7 @@
 import authApi from '@/apis/auth.api';
 import { Button } from '@/components/ui/button';
-import { Cross1Icon, Cross2Icon } from '@radix-ui/react-icons';
+import { DatePicker } from '@/components/ui/datepicker';
+import { Cross2Icon } from '@radix-ui/react-icons';
 import { useMutation } from '@tanstack/react-query';
 import { useFieldArray, useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
@@ -100,8 +101,8 @@ export default function AddCourse() {
           <input
             type='text'
             id='first_name'
-            className='block w-full rounded border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500'
-            placeholder='John'
+            className='block h-9 w-full rounded border border-gray-300 p-2 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500'
+            placeholder='Nhập mã lớp'
             required
           />
         </div>
@@ -116,8 +117,8 @@ export default function AddCourse() {
           <input
             type='text'
             id='first_name'
-            className='block w-full rounded border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500'
-            placeholder='John'
+            className='block h-9 w-full rounded border border-gray-300 p-2 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500'
+            placeholder='Nhập tên lớp'
             required
           />
         </div>
@@ -134,8 +135,8 @@ export default function AddCourse() {
           <input
             type='text'
             id='first_name'
-            className='block w-full rounded border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500'
-            placeholder='John'
+            className='block h-9 w-full rounded border border-gray-300 p-2 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500'
+            placeholder='Nhập số buổi học'
             required
           />
         </div>
@@ -147,53 +148,15 @@ export default function AddCourse() {
           >
             Ngày bắt đầu
           </label>
-          <input
-            type='text'
-            id='first_name'
-            className='block w-full rounded border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500'
-            placeholder='John'
-            required
-          />
-        </div>
-
-        <div className='w-1/2'>
-          <label
-            htmlFor='first_name'
-            className='mb-2 block text-sm font-medium text-gray-900 dark:text-white'
-          >
-            Ngày kết thúc
-          </label>
-          <input
-            type='text'
-            id='first_name'
-            className='block w-full rounded border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500'
-            placeholder='John'
-            required
-          />
+          <DatePicker />
         </div>
       </div>
 
-      <div className='mt-6 flex gap-16'>
-        <div className='w-1/2'>
-          <label
-            htmlFor='first_name'
-            className='mb-2 block text-sm font-medium text-gray-900 dark:text-white'
-          >
-            Số buổi học
-          </label>
-          <input
-            type='text'
-            id='first_name'
-            className='block w-full rounded border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500'
-            placeholder='John'
-            required
-          />
-        </div>
-      </div>
+      <span className='my-2 block text-sm font-medium text-gray-900'>
+        Thời gian học trong tuần:
+      </span>
 
-      <span className='my-2 block text-sm font-medium text-gray-900'>Thời gian học</span>
-
-      <ul className='flex max-h-40 flex-col gap-2 overflow-y-auto'>
+      <ul className='flex max-h-64 flex-col gap-2 overflow-y-auto'>
         {fields.map((field, index) => (
           <div className='flex items-center gap-8' key={field.id}>
             <div className='flex items-center gap-2'>
