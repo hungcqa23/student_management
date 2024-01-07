@@ -1,47 +1,51 @@
-import authApi from '@/apis/auth.api';
+import courseApi from '@/apis/course.api';
 import { Button } from '@/components/ui/button';
 import { DatePicker } from '@/components/ui/datepicker';
+import { hour_points } from '@/constants/date_point';
 import { Cross2Icon } from '@radix-ui/react-icons';
 import { useMutation } from '@tanstack/react-query';
+import { useState } from 'react';
 import { useFieldArray, useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
+import moment from 'moment';
 
 const optionsDate = [
   {
-    value: 'monday',
+    value: 'Monday',
     label: 'Thứ hai'
   },
   {
-    value: 'tuesday',
+    value: 'Tuesday',
     label: 'Thứ ba'
   },
   {
-    value: 'wednesday',
+    value: 'Wednesday',
     label: 'Thứ tư'
   },
   {
-    value: 'thursday',
+    value: 'Thursday',
     label: 'Thứ năm'
   },
   {
-    value: 'friday',
+    value: 'Friday',
     label: 'Thứ sáu'
   },
   {
-    value: 'saturday',
+    value: 'Saturday',
     label: 'Thứ bảy'
   },
   {
-    value: 'sunday',
+    value: 'Sunday',
     label: 'Chủ nhật'
   }
 ];
+
 interface FormData {
   courseId: string;
   courseName: string;
   courseStartDate: string;
   courseEndDate: string;
-  courseNumberOfSession: string;
+  sessions: number;
   courseMoment: {
     dayOfWeek: string;
     timeStart: string;
@@ -49,10 +53,12 @@ interface FormData {
   }[];
 }
 export default function AddCourse() {
+  const [date, setDate] = useState<Date | undefined>(undefined);
   const {
     register,
     handleSubmit,
     control,
+    reset,
     formState: { errors }
   } = useForm<FormData>({});
   const { fields, append, remove } = useFieldArray({
@@ -63,21 +69,45 @@ export default function AddCourse() {
       required: 'Hãy chọn ít nhất 1 buổi'
     }
   });
-  const loginMutation = useMutation({
-    mutationFn: (data: FormData) =>
-      authApi.login({
-        email: data.courseId,
-        password: data.courseName
-      })
+  const addCourseMutation = useMutation({
+    mutationFn: (data: {
+      courseId: string;
+      courseName: string;
+      dateOfWeeks: string[];
+      dateOfStart: string;
+      status: string;
+      sessions: number;
+    }) => courseApi.addCourse(data),
+    onSuccess: () => {
+      reset();
+      setDate(undefined);
+      toast.success('Thêm khoá học thành công');
+    },
+    onError: () => {
+      toast.error('Thêm khoá học thất bại. Hãy kiểm tra thông tin');
+    }
   });
 
   const onSubmit = handleSubmit((data: FormData) => {
-    loginMutation.mutate(data, {
-      onSuccess: data => {
-        toast.success('Successfully login!', {
-          position: toast.POSITION.TOP_RIGHT
-        });
-      }
+    //Check if courseMoment has empty string
+    if (
+      data.courseMoment.some(m => m.dayOfWeek === '') ||
+      data.courseMoment.some(m => m.timeStart === '') ||
+      data.courseMoment.some(m => m.timeEnd === '')
+    ) {
+      return toast.error('Hãy điền đầy đủ thông tin');
+    }
+    const formattedDate = moment(date).format('DD/MM/YYYY');
+    const status: string = Date.now() > date!.getTime() ? 'đang học' : 'chưa học';
+    addCourseMutation.mutate({
+      courseId: data.courseId,
+      courseName: data.courseName,
+      dateOfWeeks: data.courseMoment.map(m => {
+        return `${m.dayOfWeek} ${m.timeStart} - ${m.timeEnd}`;
+      }),
+      dateOfStart: formattedDate,
+      status: status,
+      sessions: Number(data.sessions)
     });
   });
 
@@ -97,6 +127,7 @@ export default function AddCourse() {
             className='mb-2 block text-sm font-medium text-gray-900 dark:text-white'
           >
             Mã lớp
+            <span className='text-red-500'>*</span>
           </label>
           <input
             type='text'
@@ -104,6 +135,7 @@ export default function AddCourse() {
             className='block h-9 w-full rounded border border-gray-300 p-2 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500'
             placeholder='Nhập mã lớp'
             required
+            {...register('courseId')}
           />
         </div>
 
@@ -113,6 +145,7 @@ export default function AddCourse() {
             className='mb-2 block text-sm font-medium text-gray-900 dark:text-white'
           >
             Tên lớp
+            <span className='text-red-500'>*</span>
           </label>
           <input
             type='text'
@@ -120,6 +153,7 @@ export default function AddCourse() {
             className='block h-9 w-full rounded border border-gray-300 p-2 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500'
             placeholder='Nhập tên lớp'
             required
+            {...register('courseName')}
           />
         </div>
       </div>
@@ -131,13 +165,16 @@ export default function AddCourse() {
             className='mb-2 block text-sm font-medium text-gray-900 dark:text-white'
           >
             Số buổi học
+            <span className='text-red-500'>*</span>
           </label>
           <input
-            type='text'
+            type='number'
             id='first_name'
             className='block h-9 w-full rounded border border-gray-300 p-2 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500'
             placeholder='Nhập số buổi học'
             required
+            min={1}
+            {...register('sessions')}
           />
         </div>
 
@@ -147,8 +184,9 @@ export default function AddCourse() {
             className='mb-2 block text-sm font-medium text-gray-900 dark:text-white'
           >
             Ngày bắt đầu
+            <span className='text-red-500'>*</span>
           </label>
-          <DatePicker />
+          <DatePicker date={date} setDate={setDate} />
         </div>
       </div>
 
@@ -167,7 +205,7 @@ export default function AddCourse() {
                 Ngày học:
               </label>
               <select
-                className='h-9 w-32 rounded border-2 border-gray-200 text-sm'
+                className='h-9 w-32 rounded border border-gray-200 text-sm'
                 {...register(`courseMoment.${index}.dayOfWeek`)}
               >
                 <option disabled={true} value=''>
@@ -190,16 +228,17 @@ export default function AddCourse() {
               </label>
 
               <select
-                className='h-9 w-32 rounded border-2 border-gray-200 text-sm'
+                className='h-9 w-32 rounded border border-gray-200 text-sm'
                 {...register(`courseMoment.${index}.timeStart`)}
               >
                 <option value='' disabled>
                   Chọn giờ học
                 </option>
-                <option value='volvo'>Volvo</option>
-                <option value='saab'>Saab</option>
-                <option value='fiat'>Fiat</option>
-                <option value='audi'>Audi</option>
+                {hour_points().map(option => (
+                  <option key={option.value} value={option.value}>
+                    {option.label}
+                  </option>
+                ))}
               </select>
             </div>
 
@@ -211,16 +250,17 @@ export default function AddCourse() {
                 Giờ kết thúc:
               </label>
               <select
-                className='h-9 w-32 rounded border-2 border-gray-200 text-sm'
-                {...register(`courseMoment.${index}.timeStart`)}
+                className='h-9 w-32 rounded border border-gray-200 text-sm'
+                {...register(`courseMoment.${index}.timeEnd`)}
               >
                 <option value='' disabled>
                   Chọn giờ học
                 </option>
-                <option value='volvo'>Volvo</option>
-                <option value='saab'>Saab</option>
-                <option value='fiat'>Fiat</option>
-                <option value='audi'>Audi</option>
+                {hour_points().map(option => (
+                  <option key={option.value} value={option.value}>
+                    {option.label}
+                  </option>
+                ))}
               </select>
             </div>
 
@@ -228,7 +268,7 @@ export default function AddCourse() {
               onClick={() => remove(index)}
               size='icon'
               variant={'ghost'}
-              className='h-8 w-8 rounded-full'
+              className='h-8 w-8 shrink-0 rounded-full'
               type='button'
             >
               <Cross2Icon className='h-4 w-4' />

@@ -1,10 +1,12 @@
 import { useEffect } from 'react';
 export default function Search({
   query,
-  onChange
+  onChange,
+  placeholder
 }: {
   query?: string;
   onChange: React.Dispatch<React.SetStateAction<string>>;
+  placeholder?: string;
 }) {
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
@@ -23,7 +25,7 @@ export default function Search({
         <input
           value={query}
           onChange={e => onChange(e.target.value)}
-          placeholder='Tìm kiếm tên lớp'
+          placeholder={placeholder || 'Search...'}
           className='grow bg-white text-sm text-black outline-none focus:outline-none'
           maxLength={100}
         />

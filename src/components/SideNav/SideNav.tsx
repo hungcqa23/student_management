@@ -2,48 +2,74 @@ import { Link } from 'react-router-dom';
 import ButtonNav from '../ButtonNav';
 
 import homeActive from '/src/assets/icons/homeActive.svg';
-import student from '/src/assets/icons/student.svg';
-import teacher from '/src/assets/icons/teacher.svg';
+import home from '/src/assets/icons/home.svg';
 import classes from '/src/assets/icons/classes.svg';
-import course from '/src/assets/icons/course.svg';
+import recovery from '/src/assets/icons/recovery.svg';
+import notification from '/src/assets/icons/notification.svg';
+import notificationActive from '/src/assets/icons/notificationActive.svg';
+import courseActive from '/src/assets/icons/courseActive.svg';
+import recoveryActive from '/src/assets/icons/recoveryActive.svg';
+import grade from '/src/assets/icons/grade.svg';
+import gradeActive from '/src/assets/icons/gradeActive.svg';
+import attendance from '/src/assets/icons/attendance.svg';
+import attendanceActive from '/src/assets/icons/attendanceActive.svg';
+
+import path from '@/constants/path';
 
 const Links = [
   {
-    to: '/',
+    to: '',
     text: 'Trang chủ',
-    svg: homeActive
+    svg: home,
+    svgActive: homeActive
   },
   {
-    to: '/courses',
+    to: 'courses',
     text: 'Lớp học',
-    svg: classes
+    svg: classes,
+    svgActive: courseActive
   },
   {
-    to: '/grades',
+    to: 'grades',
     text: 'Nhập Điểm',
-    svg: classes
+    svg: grade,
+    svgActive: gradeActive
   },
   {
-    to: '/attendances',
+    to: 'attendances',
     text: 'Điểm danh',
-    svg: classes
+    svg: attendance,
+    svgActive: attendanceActive
   },
   {
-    to: '/notifications',
+    to: 'notifications',
     text: 'Thông báo',
-    svg: course
+    svg: notification,
+    svgActive: notificationActive
+  },
+  {
+    to: path.recovery,
+    text: 'Khôi phục',
+    svg: recovery,
+    svgActive: recoveryActive
   }
 ];
 export default function SideNav() {
   return (
-    <nav className='fixed left-0 top-0 flex h-screen w-60 flex-col items-center bg-neutral-800 px-2'>
+    <nav className='fixed left-0 top-0 flex h-screen w-60 flex-col items-center bg-neutral-950 px-2'>
       <Link to='/' className='mb-4 block w-full text-center'>
         <img src='/src/assets/icons/logo.svg' alt='' className='inline h-24 w-24' />
       </Link>
 
       <div className='flex w-full flex-col gap-4'>
         {Links.map(link => (
-          <ButtonNav key={link.to} to={link.to} text={link.text} svg={link.svg} />
+          <ButtonNav
+            key={link.to}
+            to={link.to}
+            text={link.text}
+            svg={link.svg}
+            svgActive={link.svgActive}
+          />
         ))}
       </div>
     </nav>

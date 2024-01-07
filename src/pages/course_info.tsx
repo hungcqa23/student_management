@@ -16,21 +16,22 @@ import Dialog from '@/components/Dialog';
 import Modal from '@/components/Modal';
 import { Link } from 'react-router-dom';
 import Header from '@/components/ui/header';
+import path from '@/constants/path';
 
 export default function CourseInfo() {
   const [filter, setFilter] = useState<string>('');
   const [openDelete, setOpenDelete] = useState<boolean>(false);
   return (
     <>
-      <Header header='THÔNG TIN LỚP' />
+      <Header header='THÔNG TIN LỚP HỌC' />
 
       <div className='mb-2 flex justify-between'>
         <div className='flex flex-col gap-2'>
           <p>
-            Tên lớp: <span className='font-bold'>Cao Quảng An Hưng khóa 16</span>
+            Tên lớp: <span className='font-bold'>Giải tích 1</span>
           </p>
           <p>
-            Mã lớp: <span className='font-bold'>HV001</span>
+            Mã lớp: <span className='font-bold'>GT001</span>
           </p>
         </div>
 
@@ -66,7 +67,14 @@ export default function CourseInfo() {
         </div>
       </div>
 
-      <Search onChange={setFilter} query={filter} />
+      <div className='my-6 flex justify-between'>
+        <Search onChange={setFilter} query={filter} placeholder='Tìm kiếm tên học sinh' />
+        <Button variant={'outline'} asChild>
+          <Link to={`/${path.add_student}`}>
+            <span className='text-slate-900'>Thêm học sinh</span>
+          </Link>
+        </Button>
+      </div>
 
       <div className='mt-4 max-h-[calc(100%-10rem)] overflow-y-auto'>
         <Table>
@@ -100,15 +108,23 @@ export default function CourseInfo() {
                 <Button variant={'outline'} size='icon'>
                   <Pencil className='h-4 w-4' />
                 </Button>
+
                 <Dialog
                   isOpen={openDelete}
                   setIsOpen={setOpenDelete}
                   renderDialog={
                     <Modal header='Xác nhận'>
                       <>
-                        <div className='text-center'>Bạn có thực sự muốn xóa lớp này không?</div>
+                        <div className='text-center'>
+                          Bạn có thực sự muốn xóa học viên này không?
+                        </div>
                         <div className='mt-4 flex justify-center gap-2'>
-                          <Button variant={'destructive'} onClick={() => setOpenDelete(false)}>
+                          <Button
+                            variant={'destructive'}
+                            onClick={() => {
+                              setOpenDelete(false);
+                            }}
+                          >
                             Đồng y
                           </Button>
                           <Button variant={'outline'} onClick={() => setOpenDelete(false)}>
@@ -123,126 +139,6 @@ export default function CourseInfo() {
                     <Trash2 className='h-4 w-4' />
                   </Button>
                 </Dialog>
-              </TableCell>
-            </TableRow>
-
-            <TableRow>
-              <TableCell className='font-medium'>1</TableCell>
-              <TableCell>HV001</TableCell>
-              <TableCell>Cao Quảng An Hưng</TableCell>
-              <TableCell>0358334135</TableCell>
-              <TableCell>anbeel191@gmail.com</TableCell>
-              <TableCell>Đang học</TableCell>
-              <TableCell className='flex justify-end gap-2'>
-                <Button variant={'outline'} size='icon'>
-                  <MagnifyingGlassIcon className='h-4 w-4' />
-                </Button>
-                <Button variant={'outline'} size='icon'>
-                  <Pencil className='h-4 w-4' />
-                </Button>
-                <Button variant={'outline'} size='icon'>
-                  <Trash2 className='h-4 w-4' />
-                </Button>
-              </TableCell>
-            </TableRow>
-
-            <TableRow>
-              <TableCell className='font-medium'>1</TableCell>
-              <TableCell>HV001</TableCell>
-              <TableCell>Cao Quảng An Hưng</TableCell>
-              <TableCell>0358334135</TableCell>
-              <TableCell>anbeel191@gmail.com</TableCell>
-              <TableCell>Đang học</TableCell>
-              <TableCell className='flex justify-end gap-2'>
-                <Button variant={'outline'} size='icon'>
-                  <MagnifyingGlassIcon className='h-4 w-4' />
-                </Button>
-                <Button variant={'outline'} size='icon'>
-                  <Pencil className='h-4 w-4' />
-                </Button>
-                <Button variant={'outline'} size='icon'>
-                  <Trash2 className='h-4 w-4' />
-                </Button>
-              </TableCell>
-            </TableRow>
-
-            <TableRow>
-              <TableCell className='font-medium'>1</TableCell>
-              <TableCell>HV001</TableCell>
-              <TableCell>Cao Quảng An Hưng</TableCell>
-              <TableCell>0358334135</TableCell>
-              <TableCell>anbeel191@gmail.com</TableCell>
-              <TableCell>Đang học</TableCell>
-              <TableCell className='flex justify-end gap-2'>
-                <Button variant={'outline'} size='icon'>
-                  <MagnifyingGlassIcon className='h-4 w-4' />
-                </Button>
-                <Button variant={'outline'} size='icon'>
-                  <Pencil className='h-4 w-4' />
-                </Button>
-                <Button variant={'outline'} size='icon'>
-                  <Trash2 className='h-4 w-4' />
-                </Button>
-              </TableCell>
-            </TableRow>
-
-            <TableRow>
-              <TableCell className='font-medium'>1</TableCell>
-              <TableCell>HV001</TableCell>
-              <TableCell>Cao Quảng An Hưng</TableCell>
-              <TableCell>0358334135</TableCell>
-              <TableCell>anbeel191@gmail.com</TableCell>
-              <TableCell>Đang học</TableCell>
-              <TableCell className='flex justify-end gap-2'>
-                <Button variant={'outline'} size='icon'>
-                  <MagnifyingGlassIcon className='h-4 w-4' />
-                </Button>
-                <Button variant={'outline'} size='icon'>
-                  <Pencil className='h-4 w-4' />
-                </Button>
-                <Button variant={'outline'} size='icon'>
-                  <Trash2 className='h-4 w-4' />
-                </Button>
-              </TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell className='font-medium'>1</TableCell>
-              <TableCell>HV0010</TableCell>
-              <TableCell>Cao Quảng An Hưng</TableCell>
-              <TableCell>0358334135</TableCell>
-              <TableCell>anbeel191@gmail.com</TableCell>
-              <TableCell>Đang học</TableCell>
-              <TableCell className='flex justify-end gap-2'>
-                <Button variant={'outline'} size='icon' asChild>
-                  <Link to={'/students/student_info'}>
-                    <MagnifyingGlassIcon className='h-4 w-4' />
-                  </Link>
-                </Button>
-                <Button variant={'outline'} size='icon'>
-                  <Pencil className='h-4 w-4' />
-                </Button>
-                <Button variant={'outline'} size='icon'>
-                  <Trash2 className='h-4 w-4' />
-                </Button>
-              </TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell className='font-medium'>1</TableCell>
-              <TableCell>HV001</TableCell>
-              <TableCell>Cao Quảng An Hưng</TableCell>
-              <TableCell>0358334135</TableCell>
-              <TableCell>anbeel191@gmail.com</TableCell>
-              <TableCell>Đang học</TableCell>
-              <TableCell className='flex justify-end gap-2'>
-                <Button variant={'outline'} size='icon'>
-                  <MagnifyingGlassIcon className='h-4 w-4' />
-                </Button>
-                <Button variant={'outline'} size='icon'>
-                  <Pencil className='h-4 w-4' />
-                </Button>
-                <Button variant={'outline'} size='icon'>
-                  <Trash2 className='h-4 w-4' />
-                </Button>
               </TableCell>
             </TableRow>
           </TableBody>

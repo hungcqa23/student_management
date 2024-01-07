@@ -7,18 +7,19 @@ const path = {
   login: '/login',
   register: '/sign-up',
   logout: '/logout',
-  messages: 'messages',
   forgot_password: 'forgot-password',
   reset_password: 'reset-password',
   notifications: 'notifications',
-  search: 'search',
+  add_student: 'students/add-student',
   accounts: 'accounts',
   all: '*',
   id: ':id',
   course: 'courses',
   add_course: 'courses/add-course',
   student: 'students',
-  grades: 'grades'
+  grades: 'grades',
+  recovery: 'recovery',
+  attendance: 'attendances'
 } as const;
 
 export default path;

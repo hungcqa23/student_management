@@ -9,8 +9,7 @@ import Home from './pages/Home';
 import ResetPassword from './pages/ResetPassword';
 import Register from './pages/Register';
 import path from './constants/path';
-import Course from './pages/Course';
-import AddCourse from './pages/AddCourse';
+import AddCourse from './pages/add_course';
 import CourseInfo from './pages/course_info';
 import { useAppContext } from './contexts/app.contexts';
 import StudentInfo from './pages/student_info';
@@ -18,6 +17,9 @@ import Notification from './pages/notification';
 import Grade from './pages/grade';
 import AddGrade from './pages/add_grade';
 import AddStudent from './pages/add_student';
+import Recovery from './pages/recovery';
+import AddAttendance from './pages/add_attendance';
+import Course from './pages/course';
 
 function ProtectedRoute() {
   const { isAuthenticated } = useAppContext();
@@ -84,6 +86,10 @@ export default function useRouteElement() {
               element: <StudentInfo />
             },
             {
+              path: path.add_student,
+              element: <AddStudent />
+            },
+            {
               path: path.notifications,
               element: <Notification />
             },
@@ -96,8 +102,20 @@ export default function useRouteElement() {
               element: <AddGrade />
             },
             {
+              path: path.attendance,
+              element: <AddAttendance />
+            },
+            {
               path: path.student + '/add_student',
               element: <AddStudent />
+            },
+            {
+              path: path.recovery,
+              element: <Recovery />
+            },
+            {
+              path: path.recovery + '/students',
+              element: <Recovery />
             }
           ]
         }

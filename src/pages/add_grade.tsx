@@ -77,18 +77,19 @@ export default function AddGrade() {
             <span className='shrink-0 basis-24 text-center'>17/9/2003</span>
             <span className='shrink-0 basis-24 text-center'>17/9/2003</span>
           </div>
+
           <div className='flex min-w-fit gap-10 overflow-x-hidden font-semibold text-gray-900'>
             <input
               type='checkbox'
-              className='h-6 w-4 shrink-0 basis-24 rounded border-gray-200 text-blue-600'
+              className='h-4 w-4 shrink-0 basis-24 rounded border-gray-200 text-blue-600'
             />
             <input
               type='checkbox'
-              className='h-6 w-4 shrink-0 basis-24 rounded border-gray-200 text-blue-600'
+              className='h-4 w-4 shrink-0 basis-24 rounded border-gray-200 text-blue-600'
             />
             <input
               type='checkbox'
-              className='h-6 w-4 shrink-0 basis-24 rounded border-gray-200 text-blue-600'
+              className='h-4 w-4 shrink-0 basis-24 rounded border-gray-200 text-blue-600'
             />
           </div>
         </div>

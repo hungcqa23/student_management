@@ -34,7 +34,7 @@ export default function Notification() {
         <select
           id='courses'
           name='courses'
-          className='ml-2 h-10 w-36 rounded-lg border border-slate-900 pl-2 focus:outline-none'
+          className='text-normal ml-2 h-9 w-40 rounded-md border border-slate-900 pl-2 text-gray-950 focus:outline-none'
         >
           {optionsClass.map(option => (
             <option key={option.value} value={option.value}>
@@ -46,7 +46,7 @@ export default function Notification() {
       <label htmlFor='message' className='my-4 block font-semibold'>
         Nội dung
       </label>
-      <Textarea placeholder='Nhập nội dung thông báo mới' id='message' className='h-96' />
+      <Textarea placeholder='Nhập nội dung thông báo mới' id='message' className='h-80' />
       <Dialog
         isOpen={openModal}
         setIsOpen={setOpenModal}
