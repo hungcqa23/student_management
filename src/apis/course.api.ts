@@ -30,6 +30,13 @@ const courseApi = {
     return http.patch(`/courses/${id}`, {
       active: false
     });
+  },
+  getCourse(id: string) {
+    return http.get<
+      SuccessResponse<{
+        doc: CourseType;
+      }>
+    >(`/courses/${id}`);
   }
 };
 

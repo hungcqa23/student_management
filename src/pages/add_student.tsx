@@ -3,10 +3,12 @@ import { Button } from '@/components/ui/button';
 import { DatePicker } from '@/components/ui/datepicker';
 import Header from '@/components/ui/header';
 import { Textarea } from '@/components/ui/textarea';
+import { useQueryString } from '@/hooks/useQueryString';
 import { useMutation } from '@tanstack/react-query';
 import moment from 'moment';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { toast } from 'react-toastify';
 
 interface FormData {
   studentId: string;
@@ -14,26 +16,40 @@ interface FormData {
   email: string;
   phoneNumber: string;
   address: string;
-  fullNameRelative: string;
-  phoneNumberRelative: string;
-  addressRelative: string;
 }
 export default function AddStudent() {
   const [date, setDate] = useState<Date | undefined>(undefined);
-  const {
-    register,
-    handleSubmit,
-
-    formState: { errors }
-  } = useForm<FormData>({});
-
+  const { register, handleSubmit, reset } = useForm<FormData>({});
+  const { courseId } = useQueryString();
   const addStudentMutation = useMutation({
-    mutationFn: (data: {}) => studentApi.addStudent(data)
+    mutationFn: (data: {
+      studentId: string;
+      fullName: string;
+      email: string;
+      phoneNumber: string;
+      address: string;
+      dateOfBirth: string;
+    }) =>
+      studentApi.addStudent({
+        ...data,
+        courseId
+      }),
+    onSuccess: () => {
+      reset();
+      setDate(undefined);
+      toast.success('Thêm sinh viên thành công');
+    },
+    onError: () => {
+      toast.error('Thêm sinh viên thất bại. Hãy kiểm tra định dạng');
+    }
   });
 
   const onSubmit = handleSubmit((data: FormData) => {
     const formattedDate = moment(date).format('DD/MM/YYYY');
-    const status: string = Date.now() > date!.getTime() ? 'đang học' : 'chưa học';
+    addStudentMutation.mutate({
+      ...data,
+      dateOfBirth: formattedDate
+    });
   });
 
   return (
@@ -83,7 +99,7 @@ export default function AddStudent() {
           </div>
 
           <div className='flex w-full gap-8'>
-            <div className='w-1/2'>
+            <div className='w-1/3'>
               <label
                 htmlFor='first_name'
                 className='mb-2 block text-sm font-medium text-gray-900 dark:text-white'
@@ -101,7 +117,25 @@ export default function AddStudent() {
               />
             </div>
 
-            <div className='w-1/2'>
+            <div className='w-1/3'>
+              <label
+                htmlFor='first_name'
+                className='mb-2 block text-sm font-medium text-gray-900 dark:text-white'
+              >
+                Mã học viên
+                <span className='text-red-500'>*</span>
+              </label>
+              <input
+                type='text'
+                id='first_name'
+                className='block h-9 w-full rounded border border-gray-300 p-2 text-sm font-normal text-gray-900 placeholder:text-gray-500'
+                placeholder='Nhập mã học viên...'
+                required
+                {...register('studentId')}
+              />
+            </div>
+
+            <div className='w-1/3'>
               <label
                 htmlFor='first_name'
                 className='mb-2 block text-sm font-medium text-gray-900 dark:text-white'
@@ -113,15 +147,20 @@ export default function AddStudent() {
             </div>
           </div>
 
-          <div>
+          <div className='w-full'>
             <label htmlFor='message' className='mb-2 block text-sm font-medium'>
               Địa chỉ liên lạc
             </label>
-            <Textarea placeholder='Nhập địa chỉ liên lạc...' id='message' className='h-24 w-96' />
+            <Textarea
+              placeholder='Nhập địa chỉ liên lạc...'
+              id='message'
+              className='h-24 w-full'
+              {...register('address')}
+            />
           </div>
         </section>
 
-        <Button variant={'outline'} className='my-4'>
+        <Button variant={'outline'} className='my-4' type='submit'>
           Thêm học viên
         </Button>
       </form>
