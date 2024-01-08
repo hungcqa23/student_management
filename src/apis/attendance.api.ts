@@ -8,10 +8,17 @@ const attendanceApi = {
       SuccessResponse<{
         doc: AttendanceType[];
       }>
-    >(`/attendances`, {
-      params: {
-        courseId: id
-      }
+    >(`/attendances/${id}`);
+  },
+  updateAttendance: ({
+    attendanceDates,
+    attendanceId
+  }: {
+    attendanceId: string;
+    attendanceDates: boolean[];
+  }) => {
+    return http.patch(`/attendances/${attendanceId}`, {
+      attendanceDates
     });
   }
 };

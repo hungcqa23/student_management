@@ -4,23 +4,28 @@ import { DatePicker } from '@/components/ui/datepicker';
 import Header from '@/components/ui/header';
 import { Textarea } from '@/components/ui/textarea';
 import { useQueryString } from '@/hooks/useQueryString';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import moment from 'moment';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 
 interface FormData {
-  studentId: string;
   fullName: string;
   email: string;
   phoneNumber: string;
   address: string;
 }
 export default function AddStudent() {
-  const [date, setDate] = useState<Date | undefined>(undefined);
+  const [date, setDate] = useState<Date>(new Date('1999-01-01'));
   const { register, handleSubmit, reset } = useForm<FormData>({});
   const { courseId } = useQueryString();
+  const { data: studentsData } = useQuery({
+    queryKey: ['students', courseId],
+    queryFn: () => studentApi.getAllStudentsByCourseId(courseId || '')
+  });
+  const queryClient = useQueryClient();
+
   const addStudentMutation = useMutation({
     mutationFn: (data: {
       studentId: string;
@@ -36,19 +41,32 @@ export default function AddStudent() {
       }),
     onSuccess: () => {
       reset();
-      setDate(undefined);
+      setDate(new Date('1999-01-01'));
+      queryClient.invalidateQueries({ queryKey: ['students', courseId] });
       toast.success('Thêm sinh viên thành công');
     },
     onError: () => {
-      toast.error('Đã tốn tài tại sinh viên. Hãy kiểm tra lại thông tin chính xác!!');
+      toast.error('Hãy kiểm tra lại thông tin chính xác!!');
     }
   });
+
+  const numberOfStudents = studentsData?.data.data.doc.length || 0;
+
+  let HV = 'HV';
+  if (numberOfStudents < 10) {
+    HV = 'HV00' + (numberOfStudents + 1);
+  } else if (numberOfStudents < 100) {
+    HV = 'HV0' + (numberOfStudents + 1);
+  } else {
+    HV = 'HV' + (numberOfStudents + 1);
+  }
 
   const onSubmit = handleSubmit((data: FormData) => {
     const formattedDate = moment(date).format('DD/MM/YYYY');
     addStudentMutation.mutate({
       ...data,
-      dateOfBirth: formattedDate
+      dateOfBirth: formattedDate,
+      studentId: HV
     });
   });
 
@@ -131,7 +149,8 @@ export default function AddStudent() {
                 className='block h-9 w-full rounded border border-gray-300 p-2 text-sm font-normal text-gray-900 placeholder:text-gray-500'
                 placeholder='Nhập mã học viên...'
                 required
-                {...register('studentId')}
+                value={HV}
+                readOnly
               />
             </div>
 
@@ -150,6 +169,7 @@ export default function AddStudent() {
           <div className='w-full'>
             <label htmlFor='message' className='mb-2 block text-sm font-medium'>
               Địa chỉ liên lạc
+              <span className='text-red-500'>*</span>
             </label>
             <Textarea
               placeholder='Nhập địa chỉ liên lạc...'

@@ -7,5 +7,4 @@ export interface AttendanceType {
   };
   courseId: string;
   attendanceDates: boolean[];
-  __v: number;
 }

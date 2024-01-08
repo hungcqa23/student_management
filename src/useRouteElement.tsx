@@ -112,10 +112,6 @@ export default function useRouteElement() {
               element: <AddAttendance />
             },
             {
-              path: path.student + '/add_student',
-              element: <AddStudent />
-            },
-            {
               path: path.recovery,
               element: <Recovery />
             },

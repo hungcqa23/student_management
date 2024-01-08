@@ -41,5 +41,16 @@ export const studentApi = {
         };
       }>
     >(`/students/${id}`);
+  },
+  getAllStudentsByCourseId(id: string) {
+    return http.get<
+      SuccessResponse<{
+        doc: StudentType[];
+      }>
+    >(`/students`, {
+      params: {
+        courseId: id
+      }
+    });
   }
 };

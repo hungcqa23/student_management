@@ -80,7 +80,7 @@ export default function CourseInfo() {
           renderDialog={
             <Modal header='Xác nhận'>
               <>
-                <div className='text-center'>Bạn có thực sự muốn xóa lớp này không?</div>
+                <div className='text-center'>Bạn có thực sự muốn xóa sinh viên này không?</div>
                 <div className='mt-4 flex justify-center gap-2'>
                   <Button
                     variant={'destructive'}
