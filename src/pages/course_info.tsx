@@ -17,25 +17,96 @@ import Modal from '@/components/Modal';
 import { Link, useParams } from 'react-router-dom';
 import Header from '@/components/ui/header';
 import path from '@/constants/path';
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import courseApi from '@/apis/course.api';
 import Spinner from '@/components/Spinner';
 import { convertToVietnameseDayAndTime } from '@/utils/date';
+import { studentApi } from '@/apis/student.api';
+import { toast } from 'react-toastify';
 
 export default function CourseInfo() {
+  const queryClient = useQueryClient();
   const [filter, setFilter] = useState<string>('');
-  const [openDelete, setOpenDelete] = useState<boolean>(false);
+  const [openDelete, setOpenDelete] = useState<{
+    id: string;
+    open: boolean;
+  }>({ id: '', open: false });
+
   const { id } = useParams();
   const { data: courseData, isLoading } = useQuery({
-    queryKey: ['course', id],
+    queryKey: ['courses', id],
     queryFn: () => courseApi.getCourse(id || '')
   });
-
   const course = courseData?.data.data.doc;
+  const { data: studentsData } = useQuery({
+    queryKey: [
+      'students',
+      {
+        courseId: id || '',
+        filter: filter || ''
+      }
+    ],
+    queryFn: ({ signal }) =>
+      studentApi.getStudentsByCourseId(id || '', filter === '' ? undefined : filter, signal)
+  });
+  const students = studentsData?.data.data.doc || [];
+
+  const deleteStudentMutation = useMutation({
+    mutationFn: (id: string) => studentApi.deleteStudent(id),
+    onSuccess: () => {
+      setOpenDelete({ id: '', open: false });
+      queryClient.invalidateQueries({
+        queryKey: [
+          'students',
+          {
+            courseId: id || '',
+            filter: filter || ''
+          }
+        ]
+      });
+      queryClient.invalidateQueries({ queryKey: ['courses', id] });
+      toast.success('Xoá sinh viên thành cảng');
+    },
+    onError: () => toast.error('Xoá sinh viên thất bại')
+  });
 
   return (
     <>
       <Header header='THÔNG TIN LỚP HỌC' />
+      <>
+        <Dialog
+          isOpen={openDelete.open}
+          setIsOpen={() => setOpenDelete({ id: '', open: false })}
+          renderDialog={
+            <Modal header='Xác nhận'>
+              <>
+                <div className='text-center'>Bạn có thực sự muốn xóa lớp này không?</div>
+                <div className='mt-4 flex justify-center gap-2'>
+                  <Button
+                    variant={'destructive'}
+                    onClick={() => {
+                      deleteStudentMutation.mutate(openDelete.id);
+                    }}
+                  >
+                    Đồng y
+                  </Button>
+                  <Button
+                    variant={'outline'}
+                    onClick={() => setOpenDelete({ id: '', open: false })}
+                  >
+                    Hủy bỏ
+                  </Button>
+                </div>
+              </>
+            </Modal>
+          }
+          classNameOverlay='flex items-center justify-center bg-black/70'
+        >
+          <></>
+        </Dialog>
+      </>
+
+      {isLoading && <Spinner />}
 
       {!isLoading && (
         <>
@@ -73,7 +144,7 @@ export default function CourseInfo() {
               </p>
               <p className='flex'>
                 Thời gian học:{' '}
-                <div className='ml-1 inline-block font-bold'>
+                <span className='ml-1 inline-block font-bold'>
                   {course?.dateOfWeeks.map((item, index) => (
                     <>
                       <span className='mx-1' key={index}>
@@ -83,7 +154,7 @@ export default function CourseInfo() {
                       {/* Chèn <br/> giữa các thẻ, trừ thẻ cuối cùng */}
                     </>
                   ))}
-                </div>
+                </span>
               </p>
             </div>
           </div>
@@ -99,10 +170,10 @@ export default function CourseInfo() {
 
           <div className='mt-4 max-h-[calc(100%-10rem)] overflow-y-auto'>
             <Table>
-              <TableCaption>Danh sách lớp học</TableCaption>
+              <TableCaption>Danh sách học viên</TableCaption>
               <TableHeader className='border-b-none'>
                 <TableRow>
-                  <TableHead>STT</TableHead>
+                  <TableHead className='text-center'>STT</TableHead>
                   <TableHead>Mã học viên</TableHead>
                   <TableHead>Họ và tên</TableHead>
                   <TableHead>Số điện thoại</TableHead>
@@ -113,62 +184,40 @@ export default function CourseInfo() {
               </TableHeader>
 
               <TableBody>
-                <TableRow>
-                  <TableCell className='font-medium'>1</TableCell>
-                  <TableCell>HV001</TableCell>
-                  <TableCell>Cao Quảng An Hưng</TableCell>
-                  <TableCell>0358334135</TableCell>
-                  <TableCell>anbeel191@gmail.com</TableCell>
-                  <TableCell>Đang học</TableCell>
-                  <TableCell className='flex justify-end gap-2'>
-                    <Button variant={'outline'} size='icon' asChild>
-                      <Link to={'/students/student_info'}>
-                        <MagnifyingGlassIcon className='h-4 w-4' />
-                      </Link>
-                    </Button>
-                    <Button variant={'outline'} size='icon'>
-                      <Pencil className='h-4 w-4' />
-                    </Button>
-
-                    <Dialog
-                      isOpen={openDelete}
-                      setIsOpen={setOpenDelete}
-                      renderDialog={
-                        <Modal header='Xác nhận'>
-                          <>
-                            <div className='text-center'>
-                              Bạn có thực sự muốn xóa học viên này không?
-                            </div>
-                            <div className='mt-4 flex justify-center gap-2'>
-                              <Button
-                                variant={'destructive'}
-                                onClick={() => {
-                                  setOpenDelete(false);
-                                }}
-                              >
-                                Đồng y
-                              </Button>
-                              <Button variant={'outline'} onClick={() => setOpenDelete(false)}>
-                                Hủy bỏ
-                              </Button>
-                            </div>
-                          </>
-                        </Modal>
-                      }
-                    >
+                {students.map((student, index) => (
+                  <TableRow>
+                    <TableCell className='text-center font-medium'>{index + 1}</TableCell>
+                    <TableCell>{student.studentId}</TableCell>
+                    <TableCell>{student.fullName}</TableCell>
+                    <TableCell>{student.phoneNumber}</TableCell>
+                    <TableCell>{student.email}</TableCell>
+                    <TableCell>{student.status}</TableCell>
+                    <TableCell className='flex justify-end gap-2'>
+                      <Button variant={'outline'} size='icon' asChild>
+                        <Link to={`/students/${student._id}`}>
+                          <MagnifyingGlassIcon className='h-4 w-4' />
+                        </Link>
+                      </Button>
                       <Button variant={'outline'} size='icon'>
+                        <Pencil className='h-4 w-4' />
+                      </Button>
+                      <Button
+                        variant={'outline'}
+                        size='icon'
+                        onClick={() => {
+                          setOpenDelete({ id: student._id, open: true });
+                        }}
+                      >
                         <Trash2 className='h-4 w-4' />
                       </Button>
-                    </Dialog>
-                  </TableCell>
-                </TableRow>
+                    </TableCell>
+                  </TableRow>
+                ))}
               </TableBody>
             </Table>
           </div>
         </>
       )}
-
-      {isLoading && <Spinner />}
     </>
   );
 }

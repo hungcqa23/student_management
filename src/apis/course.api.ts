@@ -37,6 +37,14 @@ const courseApi = {
         doc: CourseType;
       }>
     >(`/courses/${id}`);
+  },
+  getStatistics() {
+    return http.get<
+      SuccessResponse<{
+        numberCourses: number;
+        numberStudents: number;
+      }>
+    >(`/courses/statistics`);
   }
 };
 

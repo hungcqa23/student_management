@@ -40,7 +40,7 @@ export default function AddStudent() {
       toast.success('Thêm sinh viên thành công');
     },
     onError: () => {
-      toast.error('Thêm sinh viên thất bại. Hãy kiểm tra định dạng');
+      toast.error('Đã tốn tài tại sinh viên. Hãy kiểm tra lại thông tin chính xác!!');
     }
   });
 

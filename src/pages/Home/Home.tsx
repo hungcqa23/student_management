@@ -1,4 +1,12 @@
+import courseApi from '@/apis/course.api';
+import Spinner from '@/components/Spinner';
+import { useQuery } from '@tanstack/react-query';
+
 export default function Home() {
+  const { data, isLoading } = useQuery({
+    queryKey: ['home'],
+    queryFn: () => courseApi.getStatistics()
+  });
   return (
     <>
       <div className='mb-4 flex items-center justify-between text-white'>
@@ -7,14 +15,17 @@ export default function Home() {
             Cùng <span className='text-yellow-400'>Eduhub</span> quản lý lớp học và học viên của
             bạn.
           </h1>
-          <div className='my-4 flex text-right text-2xl font-bold'>
-            <p>Bạn đang có: </p>
-            <div>
-              <span className='text-yellow-400'>4</span> lớp học
-              <br />
-              <span className='text-yellow-400'>87</span> học viên
+          {!isLoading && (
+            <div className='my-4 flex text-right text-2xl font-bold'>
+              <p>Bạn đang có: </p>
+              <div>
+                <span className='text-yellow-400'>{data?.data.data.numberCourses}</span> lớp học
+                <br />
+                <span className='text-yellow-400'>{data?.data.data.numberStudents}</span> học viên
+              </div>
             </div>
-          </div>
+          )}
+          {isLoading && <Spinner />}
         </div>
         <svg
           width={599}
