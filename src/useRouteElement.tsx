@@ -20,6 +20,8 @@ import AddStudent from './pages/add_student';
 import Recovery from './pages/recovery';
 import AddAttendance from './pages/add_attendance';
 import Course from './pages/course';
+import Fee from './pages/fee';
+import CollectFee from './pages/collect_fee';
 
 function ProtectedRoute() {
   const { isAuthenticated } = useAppContext();
@@ -120,6 +122,14 @@ export default function useRouteElement() {
             {
               path: path.recovery + '/students',
               element: <Recovery />
+            },
+            {
+              path: path.fee,
+              element: <Fee />
+            },
+            {
+              path: path.fee + '/:id',
+              element: <CollectFee />
             }
           ]
         }
