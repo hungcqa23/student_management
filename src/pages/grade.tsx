@@ -61,7 +61,7 @@ export default function Grades() {
               <TableHead>Thời gian</TableHead>
               <TableHead>Ngày kết thúc</TableHead>
               <TableHead>Trạng thái</TableHead>
-              <TableHead className='text-right'>Thao tác</TableHead>
+              <TableHead className='text-center'>Thao tác</TableHead>
             </TableRow>
           </TableHeader>
 
@@ -81,7 +81,7 @@ export default function Grades() {
                   </TableCell>
                   <TableCell>{course.dateOfEnd}</TableCell>
                   <TableCell>{course.status}</TableCell>
-                  <TableCell className='text-right'>
+                  <TableCell className='text-center'>
                     <Button variant={'outline'} size='icon' asChild>
                       <Link
                         to={`${

@@ -1,5 +1,7 @@
 import Search from '@/components/Search';
+import Spinner from '@/components/Spinner';
 import { Button } from '@/components/ui/button';
+import Header from '@/components/ui/header';
 import {
   Table,
   TableBody,
@@ -9,16 +11,24 @@ import {
   TableHeader,
   TableRow
 } from '@/components/ui/table';
-import { Pencil } from 'lucide-react';
+import useCourse from '@/hooks/useCourse';
+import { CourseType } from '@/types/course.type';
+import { convertToVietnameseDayAndTime } from '@/utils/date';
 import { WalletCards } from 'lucide-react';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 
 export default function Fee() {
+  const { getAllCourses } = useCourse();
   const [filter, setFilter] = useState<string>('');
+
+  const { data: coursesData, isLoading } = getAllCourses(filter !== '' ? filter : undefined);
+
+  const courses: CourseType[] = coursesData?.data.data.doc || [];
+
   return (
     <div>
-      <h1 className='mb-4 text-2xl font-semibold uppercase text-black'>Học phí</h1>
+      <Header header='Học phí' />
       <Search onChange={setFilter} query={filter} />
 
       <div className='mt-4 max-h-[60vh] overflow-y-auto'>
@@ -26,212 +36,45 @@ export default function Fee() {
           <TableCaption>Danh sách lớp học</TableCaption>
           <TableHeader className='border-b-none'>
             <TableRow>
-              <TableHead>STT</TableHead>
+              <TableHead className='text-center'>STT</TableHead>
               <TableHead>Mã lớp</TableHead>
               <TableHead>Tên lớp</TableHead>
-              <TableHead>Sĩ số</TableHead>
+              <TableHead className='text-center'>Sĩ số</TableHead>
               <TableHead>Thời gian</TableHead>
               <TableHead>Ngày kết thúc</TableHead>
               <TableHead>Trạng thái</TableHead>
-              <TableHead className='text-right'>Thao tác</TableHead>
+              <TableHead className='text-center'>Thao tác</TableHead>
             </TableRow>
           </TableHeader>
 
-          <TableBody>
-            <TableRow>
-              <TableCell className='font-medium'>1</TableCell>
-              <TableCell>GT16</TableCell>
-              <TableCell>Giải tích 1</TableCell>
-              <TableCell>10</TableCell>
-              <TableCell>
-                Thứ hai (15:30 - 17:30)
-                <br />
-                Thứ ba (15:30 - 17:30)
-                <br />
-                Thứ năm (15:30 - 17:30)
-              </TableCell>
-              <TableCell>30/12/2023</TableCell>
-              <TableCell>Đang học</TableCell>
-              <TableCell className='text-right'>
-                <Button variant={'outline'} size='icon'>
-                  <Link to={'/fee/1'}>
-                    <WalletCards className='h-4 w-4' />
-                  </Link>
-                </Button>
-              </TableCell>
-            </TableRow>
+          {isLoading && <Spinner />}
+          {!isLoading && (
+            <TableBody>
+              {courses.map((course, index) => (
+                <TableRow key={course._id}>
+                  <TableCell className='text-center font-medium'>{index + 1}</TableCell>
+                  <TableCell>{course.courseId}</TableCell>
+                  <TableCell>{course.courseName}</TableCell>
+                  <TableCell className='text-center'>{course.numberOfStudents}</TableCell>
+                  <TableCell>
+                    {course.dateOfWeeks.map((dateOfWeek, index) => {
+                      return <p key={index}>{convertToVietnameseDayAndTime(dateOfWeek)}</p>;
+                    })}
+                  </TableCell>
+                  <TableCell>{course.dateOfEnd}</TableCell>
+                  <TableCell>{course.status}</TableCell>
 
-            <TableRow>
-              <TableCell className='font-medium'>1</TableCell>
-              <TableCell>GT16</TableCell>
-              <TableCell>Giải tích 1</TableCell>
-              <TableCell>10</TableCell>
-              <TableCell>
-                Thứ hai (15:30 - 17:30)
-                <br />
-                Thứ ba (15:30 - 17:30)
-              </TableCell>
-              <TableCell>30/12/2023</TableCell>
-              <TableCell>Đang học</TableCell>
-              <TableCell className='flex justify-end gap-2'>
-                <Button variant={'outline'} size='icon'>
-                  <WalletCards className='h-4 w-4' />
-                </Button>
-              </TableCell>
-            </TableRow>
-
-            <TableRow>
-              <TableCell className='font-medium'>1</TableCell>
-              <TableCell>GT16</TableCell>
-              <TableCell>Giải tích 1</TableCell>
-              <TableCell>10</TableCell>
-              <TableCell>
-                Thứ hai (15:30 - 17:30)
-                <br />
-                Thứ ba (15:30 - 17:30)
-              </TableCell>
-              <TableCell>30/12/2023</TableCell>
-              <TableCell>Kết thúc</TableCell>
-              <TableCell className='flex justify-end gap-2'>
-                <Button variant={'outline'} size='icon'>
-                  <WalletCards className='h-4 w-4' />
-                </Button>
-              </TableCell>
-            </TableRow>
-
-            <TableRow>
-              <TableCell className='font-medium'>1</TableCell>
-              <TableCell>GT16</TableCell>
-              <TableCell>Giải tích 1</TableCell>
-              <TableCell>10</TableCell>
-              <TableCell>
-                Thứ hai (15:30 - 17:30)
-                <br />
-                Thứ ba (15:30 - 17:30)
-              </TableCell>
-              <TableCell>30/12/2023</TableCell>
-              <TableCell>Đang học</TableCell>
-              <TableCell className='flex justify-end gap-2'>
-                <Button variant={'outline'} size='icon'>
-                  <WalletCards className='h-4 w-4' />
-                </Button>
-              </TableCell>
-            </TableRow>
-
-            <TableRow>
-              <TableCell className='font-medium'>1</TableCell>
-              <TableCell>GT16</TableCell>
-              <TableCell>Giải tích 1</TableCell>
-              <TableCell>10</TableCell>
-              <TableCell>
-                Thứ hai (15:30 - 17:30)
-                <br />
-                Thứ ba (15:30 - 17:30)
-              </TableCell>
-              <TableCell>30/12/2023</TableCell>
-              <TableCell>Đang học</TableCell>
-              <TableCell className='flex justify-end gap-2'>
-                <Button variant={'outline'} size='icon'>
-                  <WalletCards className='h-4 w-4' />
-                </Button>
-              </TableCell>
-            </TableRow>
-
-            <TableRow>
-              <TableCell className='font-medium'>1</TableCell>
-              <TableCell>GT16</TableCell>
-              <TableCell>Giải tích 1</TableCell>
-              <TableCell>10</TableCell>
-              <TableCell>
-                Thứ hai (15:30 - 17:30)
-                <br />
-                Thứ ba (15:30 - 17:30)
-              </TableCell>
-              <TableCell>30/12/2023</TableCell>
-              <TableCell>Đang học</TableCell>
-              <TableCell className='flex justify-end gap-2'>
-                <Button variant={'outline'} size='icon'>
-                  <WalletCards className='h-4 w-4' />
-                </Button>
-              </TableCell>
-            </TableRow>
-
-            <TableRow>
-              <TableCell className='font-medium'>1</TableCell>
-              <TableCell>GT16</TableCell>
-              <TableCell>Giải tích 1</TableCell>
-              <TableCell>10</TableCell>
-              <TableCell>
-                Thứ hai (15:30 - 17:30)
-                <br />
-                Thứ ba (15:30 - 17:30)
-              </TableCell>
-              <TableCell>30/12/2023</TableCell>
-              <TableCell>Đang học</TableCell>
-              <TableCell className='flex justify-end gap-2'>
-                <Button variant={'outline'} size='icon'>
-                  <WalletCards className='h-4 w-4' />
-                </Button>
-              </TableCell>
-            </TableRow>
-
-            <TableRow>
-              <TableCell className='font-medium'>1</TableCell>
-              <TableCell>GT16</TableCell>
-              <TableCell>Giải tích 1</TableCell>
-              <TableCell>10</TableCell>
-              <TableCell>
-                Thứ hai (15:30 - 17:30)
-                <br />
-                Thứ ba (15:30 - 17:30)
-              </TableCell>
-              <TableCell>30/12/2023</TableCell>
-              <TableCell>Đang học</TableCell>
-              <TableCell className='flex justify-end gap-2'>
-                <Button variant={'outline'} size='icon'>
-                  <WalletCards className='h-4 w-4' />
-                </Button>
-              </TableCell>
-            </TableRow>
-
-            <TableRow>
-              <TableCell className='font-medium'>1</TableCell>
-              <TableCell>GT16</TableCell>
-              <TableCell>Giải tích 1</TableCell>
-              <TableCell>10</TableCell>
-              <TableCell>
-                Thứ hai (15:30 - 17:30)
-                <br />
-                Thứ ba (15:30 - 17:30)
-              </TableCell>
-              <TableCell>30/12/2023</TableCell>
-              <TableCell>Đang học</TableCell>
-              <TableCell className='flex justify-end gap-2'>
-                <Button variant={'outline'} size='icon'>
-                  <WalletCards className='h-4 w-4' />
-                </Button>
-              </TableCell>
-            </TableRow>
-
-            <TableRow>
-              <TableCell className='font-medium'>1</TableCell>
-              <TableCell>GT16</TableCell>
-              <TableCell>Giải tích 1</TableCell>
-              <TableCell>10</TableCell>
-              <TableCell>
-                Thứ hai (15:30 - 17:30)
-                <br />
-                Thứ ba (15:30 - 17:30)
-              </TableCell>
-              <TableCell>30/12/2023</TableCell>
-              <TableCell>Đang học</TableCell>
-              <TableCell className='flex justify-end gap-2'>
-                <Button variant={'outline'} size='icon'>
-                  <WalletCards className='h-4 w-4' />
-                </Button>
-              </TableCell>
-            </TableRow>
-          </TableBody>
+                  <TableCell className='text-center'>
+                    <Button variant={'outline'} size='icon' asChild>
+                      <Link to={`/fee/${course._id}`}>
+                        <WalletCards className='h-4 w-4' />
+                      </Link>
+                    </Button>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          )}
         </Table>
       </div>
     </div>

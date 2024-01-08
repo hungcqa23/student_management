@@ -17,7 +17,7 @@ interface FormData {
   address: string;
 }
 export default function AddStudent() {
-  const [date, setDate] = useState<Date>(new Date('1999-01-01'));
+  const [date, setDate] = useState<Date | undefined>(new Date('1999-01-01'));
   const { register, handleSubmit, reset } = useForm<FormData>({});
   const { courseId } = useQueryString();
   const { data: studentsData } = useQuery({

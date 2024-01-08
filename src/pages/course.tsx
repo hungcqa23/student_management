@@ -12,7 +12,7 @@ import {
 } from '@/components/ui/table';
 import { MagnifyingGlassIcon } from '@radix-ui/react-icons';
 import { Link, useNavigate } from 'react-router-dom';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import courseApi from '@/apis/course.api';
 import { CourseType } from '@/types/course.type';
 import { Pencil, Trash2 } from 'lucide-react';
@@ -22,8 +22,10 @@ import Modal from '@/components/Modal';
 import { toast } from 'react-toastify';
 import Spinner from '@/components/Spinner';
 import Header from '@/components/ui/header';
+import useCourse from '@/hooks/useCourse';
 
 export default function Course() {
+  const { getAllCourses } = useCourse();
   const [filter, setFilter] = useState<string>('');
   const [openDelete, setOpenDelete] = useState<{
     id: string;
@@ -31,15 +33,9 @@ export default function Course() {
   }>({ id: '', open: false });
   const queryClient = useQueryClient();
   const navigate = useNavigate();
-  const { data: coursesData, isLoading } = useQuery({
-    queryKey: [
-      'courses',
-      {
-        filter
-      }
-    ],
-    queryFn: ({ signal }) => courseApi.getCourses(filter || undefined, signal)
-  });
+
+  const { data: coursesData, isLoading } = getAllCourses(filter !== '' ? filter : undefined);
+
   const courses: CourseType[] = coursesData?.data.data.doc || [];
   const deleteCourseMutation = useMutation({
     mutationFn: (id: string) => courseApi.deleteCourse(id),
@@ -74,7 +70,7 @@ export default function Course() {
               <TableHead>Thời gian</TableHead>
               <TableHead>Ngày kết thúc</TableHead>
               <TableHead>Trạng thái</TableHead>
-              <TableHead className='text-right'>Thao tác</TableHead>
+              <TableHead className='text-center'>Thao tác</TableHead>
             </TableRow>
           </TableHeader>
 
@@ -94,7 +90,7 @@ export default function Course() {
                   </TableCell>
                   <TableCell>{course.dateOfEnd}</TableCell>
                   <TableCell>{course.status}</TableCell>
-                  <TableCell className='text-right'>
+                  <TableCell className='text-center'>
                     <Button variant={'outline'} size='icon' asChild>
                       <Link to={`/courses/${course._id}`}>
                         <MagnifyingGlassIcon className='h-4 w-4' />

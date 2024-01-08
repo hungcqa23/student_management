@@ -1,5 +1,5 @@
 import attendanceApi from '@/apis/attendance.api';
-import courseApi from '@/apis/course.api';
+
 import { Checkbox } from '@/components/ui/checkbox';
 import Header from '@/components/ui/header';
 import {
@@ -10,6 +10,7 @@ import {
   TableHeader,
   TableRow
 } from '@/components/ui/table';
+import useCourse from '@/hooks/useCourse';
 import { AttendanceType } from '@/types/attendance.type';
 import { convertToVietnameseDayAndTime } from '@/utils/date';
 import { useMutation, useQuery } from '@tanstack/react-query';
@@ -19,18 +20,13 @@ import { useParams } from 'react-router-dom';
 export default function AddAttendance() {
   const { id } = useParams();
   const [attendances, setAttendances] = useState<AttendanceType[]>([]);
-  const { data: courseData, isLoading } = useQuery({
-    queryKey: ['courses', id],
-    queryFn: () => courseApi.getCourse(id || '')
-  });
+
+  const { getCourseById } = useCourse();
+  const { data: courseData, isLoading } = getCourseById(id || '');
   const course = courseData?.data.data.doc;
+
   const { data: attendancesData, isLoading: isLoadingAttendances } = useQuery({
-    queryKey: [
-      'attendances',
-      {
-        courseId: id || ''
-      }
-    ],
+    queryKey: ['attendances', id || ''],
     queryFn: () => attendanceApi.getAttendanceByCourseId(id || '')
   });
 

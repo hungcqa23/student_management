@@ -21,7 +21,7 @@ import Recovery from './pages/recovery';
 import AddAttendance from './pages/add_attendance';
 import Course from './pages/course';
 import Fee from './pages/fee';
-import CollectFee from './pages/collect_fee';
+import CollectFee from './pages/fee_info';
 
 function ProtectedRoute() {
   const { isAuthenticated } = useAppContext();

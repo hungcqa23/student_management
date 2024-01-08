@@ -9,6 +9,7 @@ export interface CourseType {
   dates: string[];
   sessions: number;
   status: string;
+  tuitionFee: number;
   active: boolean;
   createdAt: string;
 }
