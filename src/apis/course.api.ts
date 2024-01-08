@@ -10,6 +10,7 @@ const courseApi = {
     dateOfStart: string;
     status: string;
     sessions: number;
+    tuitionFee: number;
   }) {
     return http.post('/courses', body);
   },

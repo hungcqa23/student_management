@@ -14,7 +14,7 @@ import CourseInfo from './pages/course_info';
 import { useAppContext } from './contexts/app.contexts';
 import StudentInfo from './pages/student_info';
 import Notification from './pages/notification';
-import Grade from './pages/grade';
+import Grades from './pages/grade';
 import AddGrade from './pages/add_grade';
 import AddStudent from './pages/add_student';
 import Recovery from './pages/recovery';
@@ -95,7 +95,7 @@ export default function useRouteElement() {
             },
             {
               path: path.grades,
-              element: <Grade />
+              element: <Grades />
             },
             {
               path: path.grades + '/:id',
@@ -103,6 +103,10 @@ export default function useRouteElement() {
             },
             {
               path: path.attendance,
+              element: <Grades />
+            },
+            {
+              path: path.attendance + '/:id',
               element: <AddAttendance />
             },
             {

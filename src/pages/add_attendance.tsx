@@ -1,4 +1,5 @@
-import { Button } from '@/components/ui/button';
+import attendanceApi from '@/apis/attendance.api';
+import courseApi from '@/apis/course.api';
 import { Checkbox } from '@/components/ui/checkbox';
 import Header from '@/components/ui/header';
 import {
@@ -9,8 +10,28 @@ import {
   TableHeader,
   TableRow
 } from '@/components/ui/table';
+import { convertToVietnameseDayAndTime } from '@/utils/date';
+import { useQuery } from '@tanstack/react-query';
+import { useParams } from 'react-router-dom';
 
 export default function AddAttendance() {
+  const { id } = useParams();
+  const { data: courseData, isLoading } = useQuery({
+    queryKey: ['courses', id],
+    queryFn: () => courseApi.getCourse(id || '')
+  });
+  const course = courseData?.data.data.doc;
+  const { data: attendancesData } = useQuery({
+    queryKey: [
+      'attendances',
+      {
+        courseId: id || ''
+      }
+    ],
+    queryFn: () => attendanceApi.getAttendanceByCourseId(id || '')
+  });
+  const attendances = attendancesData?.data.data.doc || [];
+
   return (
     <>
       <Header header='Điểm danh' />
@@ -18,99 +39,84 @@ export default function AddAttendance() {
       <div className='mb-2 flex justify-between'>
         <div className='flex flex-col gap-2'>
           <p>
-            Tên lớp: <span className='font-bold'>GT16</span>
+            Tên lớp: <span className='font-bold'>{course?.courseName}</span>
           </p>
           <p>
-            Mã lớp: <span className='font-bold'>GK001</span>
-          </p>
-        </div>
-
-        <div className='flex flex-col gap-2'>
-          <p>
-            Sĩ số: <span className='font-bold'>16</span>
-          </p>
-          <p>
-            Số buổi học: <span className='font-bold'>2</span>
+            Mã lớp: <span className='font-bold'>{course?.courseId}</span>
           </p>
         </div>
 
         <div className='flex flex-col gap-2'>
           <p>
-            Ngày bắt đầu: <span className='font-bold'>17/9/2023</span>
+            Sĩ số: <span className='font-bold'>{course?.numberOfStudents}</span>
           </p>
           <p>
-            Ngày kết thúc: <span className='font-bold'>17/9/2023</span>
+            Số buổi học: <span className='font-bold'>{course?.sessions}</span>
           </p>
         </div>
 
         <div className='flex flex-col gap-2'>
           <p>
-            Trạng thái: <span className='font-bold'>Đang học</span>
+            Ngày bắt đầu: <span className='font-bold'>{course?.dateOfStart}</span>
+          </p>
+          <p>
+            Ngày kết thúc: <span className='font-bold'>{course?.dateOfEnd}</span>
+          </p>
+        </div>
+
+        <div className='flex flex-col gap-2'>
+          <p>
+            Trạng thái: <span className='font-bold'>{course?.status}</span>
           </p>
           <p className='flex'>
             Thời gian học:{' '}
             <span className='ml-1 inline-block font-bold'>
-              Chủ nhật(14:30 - 17:30)
-              <br /> Thứ Ba (8:30 - 13:30)
+              {course?.dateOfWeeks.map((item, index) => (
+                <>
+                  <span className='mx-1' key={index}>
+                    {convertToVietnameseDayAndTime(item)}
+                  </span>
+                  {index < course.dateOfWeeks.length - 1 && <br />}{' '}
+                  {/* Chèn <br/> giữa các thẻ, trừ thẻ cuối cùng */}
+                </>
+              ))}
             </span>
           </p>
         </div>
       </div>
       {/* Table */}
-      <Table>
+      <Table className='mt-10'>
         <TableHeader>
           <TableRow>
-            <TableHead>STT</TableHead>
-            <TableHead className='w-52'>Họ và tên</TableHead>
-            <TableHead>17/9/2023</TableHead>
-            <TableHead>17/9/2023</TableHead>
-            <TableHead>17/9/2023</TableHead>
-            <TableHead>17/9/2023</TableHead>
-            <TableHead>17/9/2023</TableHead>
-            <TableHead>17/9/2023</TableHead>
-            <TableHead>17/9/2023</TableHead>
-            <TableHead>17/9/2023</TableHead>
-            <TableHead>17/9/2023</TableHead>
-            <TableHead>17/9/2023</TableHead>
+            <TableHead className='text-center'>STT</TableHead>
+            <TableHead>Họ và tên</TableHead>
+            <TableHead>Mã học viên</TableHead>
+            {course?.dates.map(date => (
+              <>
+                <TableHead className='text-center' key={date}>
+                  {date}
+                </TableHead>
+              </>
+            ))}
           </TableRow>
         </TableHeader>
 
         <TableBody>
-          <TableRow>
-            <TableCell className='text-center'>1</TableCell>
-            <TableCell>Nguyễn Thanh Huy</TableCell>
+          {attendances.map((attendance, index) => (
+            <TableRow key={attendance._id}>
+              <TableCell className='text-center'>{index + 1}</TableCell>
+              <TableCell>{attendance.studentId.fullName}</TableCell>
+              <TableCell>{attendance.studentId.studentId}</TableCell>
 
-            <TableCell className='text-center'>
-              <Checkbox />
-            </TableCell>
-            <TableCell className='text-center'>
-              <Checkbox />
-            </TableCell>
-            <TableCell className='text-center'>
-              <Checkbox />
-            </TableCell>
-            <TableCell className='text-center'>
-              <Checkbox />
-            </TableCell>
-            <TableCell className='text-center'>
-              <Checkbox />
-            </TableCell>
-            <TableCell className='text-center'>
-              <Checkbox />
-            </TableCell>
-            <TableCell className='text-center'>
-              <Checkbox />
-            </TableCell>
-            <TableCell className='text-center'>
-              <Checkbox />
-            </TableCell>
-            <TableCell className='text-center'>
-              <Checkbox />
-            </TableCell>
-            <TableCell className='text-center'>
-              <Checkbox />
-            </TableCell>
-          </TableRow>
+              {attendance.attendanceDates.map((attendanceDate, index) => (
+                <>
+                  <TableCell className='text-center' key={index}>
+                    <Checkbox checked={attendanceDate} />
+                  </TableCell>
+                </>
+              ))}
+            </TableRow>
+          ))}
         </TableBody>
       </Table>
     </>

@@ -46,6 +46,7 @@ interface FormData {
   courseStartDate: string;
   courseEndDate: string;
   sessions: number;
+  tuitionFee: number;
   courseMoment: {
     dayOfWeek: string;
     timeStart: string;
@@ -77,6 +78,7 @@ export default function AddCourse() {
       dateOfStart: string;
       status: string;
       sessions: number;
+      tuitionFee: number;
     }) => courseApi.addCourse(data),
     onSuccess: () => {
       reset();
@@ -107,7 +109,8 @@ export default function AddCourse() {
       }),
       dateOfStart: formattedDate,
       status: status,
-      sessions: Number(data.sessions)
+      sessions: data.sessions,
+      tuitionFee: data.tuitionFee
     });
   });
 
@@ -159,7 +162,7 @@ export default function AddCourse() {
       </div>
 
       <div className='mt-6 flex gap-16'>
-        <div className='w-1/2'>
+        <div className='w-1/3'>
           <label
             htmlFor='first_name'
             className='mb-2 block text-sm font-medium text-gray-900 dark:text-white'
@@ -178,7 +181,27 @@ export default function AddCourse() {
           />
         </div>
 
-        <div className='w-1/2'>
+        <div className='w-1/3'>
+          <label
+            htmlFor='first_name'
+            className='mb-2 block text-sm font-medium text-gray-900 dark:text-white'
+          >
+            Học phí
+            <span className='text-red-500'>*</span>
+          </label>
+          <input
+            type='number'
+            id='first_name'
+            className='block h-9 w-full rounded border border-gray-300 p-2 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500'
+            placeholder='Nhập số buổi học'
+            required
+            min={0}
+            step={100000}
+            {...register('tuitionFee')}
+          />
+        </div>
+
+        <div className='w-1/3'>
           <label
             htmlFor='first_name'
             className='mb-2 block text-sm font-medium text-gray-900 dark:text-white'
