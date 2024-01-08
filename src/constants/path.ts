@@ -19,7 +19,8 @@ const path = {
   student: 'students',
   grades: 'grades',
   recovery: 'recovery',
-  attendance: 'attendances'
+  attendance: 'attendances',
+  fee: 'fee'
 } as const;
 
 export default path;

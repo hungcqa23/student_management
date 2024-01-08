@@ -13,6 +13,8 @@ import grade from '/src/assets/icons/grade.svg';
 import gradeActive from '/src/assets/icons/gradeActive.svg';
 import attendance from '/src/assets/icons/attendance.svg';
 import attendanceActive from '/src/assets/icons/attendanceActive.svg';
+import fee from '/src/assets/icons/fee.svg';
+import feeActive from '/src/assets/icons/feeActive.svg';
 
 import path from '@/constants/path';
 
@@ -52,6 +54,12 @@ const Links = [
     text: 'Khôi phục',
     svg: recovery,
     svgActive: recoveryActive
+  },
+  {
+    to: path.fee,
+    text: 'Học phí',
+    svg: fee,
+    svgActive: feeActive
   }
 ];
 export default function SideNav() {
