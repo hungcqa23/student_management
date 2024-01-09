@@ -2,6 +2,7 @@ import { Button } from '@/components/ui/button';
 import Header from '@/components/ui/header';
 import { Link, useLocation } from 'react-router-dom';
 import Students from './Students/Students';
+import Courses from './Courses/Courses';
 
 const filterButtons = [
   {
@@ -38,6 +39,7 @@ export default function Recovery() {
       </div>
 
       {location.pathname === '/recovery/students' && <Students />}
+      {location.pathname === '/recovery' && <Courses />}
     </>
   );
 }

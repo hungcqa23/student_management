@@ -46,6 +46,23 @@ const courseApi = {
         numberStudents: number;
       }>
     >(`/courses/statistics`);
+  },
+  getCoursesRecovery() {
+    return http.get<
+      SuccessResponse<{
+        doc: CourseType[];
+      }>
+    >('/courses?active=false');
+  },
+  recoverCourse(id: string) {
+    return http.post(`/courses/recovery/${id}`, {
+      active: true
+    });
+  },
+  getCourseName() {
+    return http.get<{
+      doc: string[];
+    }>(`/courses/course-name`);
   }
 };
 

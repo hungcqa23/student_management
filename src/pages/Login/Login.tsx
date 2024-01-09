@@ -10,7 +10,7 @@ import { toast } from 'react-toastify';
 import { useAppContext } from '@/contexts/app.contexts';
 
 const loginSchema = schema.pick(['email', 'password']);
-type FormData = Omit<Schema, 'confirmPassword' | 'username'>;
+type FormData = Omit<Schema, 'confirmPassword' | 'username' | 'fullName'>;
 export default function Login() {
   const { setIsAuthenticated, setProfile } = useAppContext();
   const {

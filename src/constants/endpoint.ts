@@ -1,4 +1,4 @@
-export const URL_REGISTER = '/users/register';
+export const URL_REGISTER = '/users/sign-up';
 export const URL_LOGIN = '/users/login';
 export const URL_LOGOUT = '/users/logout';
 export const URL_FORGOT_PASSWORD = '/users/forgot-password';

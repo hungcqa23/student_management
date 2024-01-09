@@ -90,14 +90,11 @@ export default function Course() {
                   </TableCell>
                   <TableCell>{course.dateOfEnd}</TableCell>
                   <TableCell>{course.status}</TableCell>
-                  <TableCell className='text-center'>
+                  <TableCell className='flex justify-center gap-2 text-center'>
                     <Button variant={'outline'} size='icon' asChild>
                       <Link to={`/courses/${course._id}`}>
                         <MagnifyingGlassIcon className='h-4 w-4' />
                       </Link>
-                    </Button>
-                    <Button variant={'outline'} size='icon' className='mx-2'>
-                      <Pencil className='h-4 w-4' />
                     </Button>
                     <Button
                       variant={'outline'}

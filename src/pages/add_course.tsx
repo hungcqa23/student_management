@@ -110,7 +110,7 @@ export default function AddCourse() {
       dateOfStart: formattedDate,
       status: status,
       sessions: data.sessions,
-      tuitionFee: data.tuitionFee
+      tuitionFee: Number(data.tuitionFee)
     });
   });
 
@@ -196,7 +196,6 @@ export default function AddCourse() {
             placeholder='Nhập số buổi học'
             required
             min={0}
-            step={100000}
             {...register('tuitionFee')}
           />
         </div>

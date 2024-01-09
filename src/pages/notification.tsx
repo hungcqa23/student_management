@@ -1,72 +1,67 @@
-import Dialog from '@/components/Dialog';
-import Modal from '@/components/Modal';
+import courseApi from '@/apis/course.api';
 import { Button } from '@/components/ui/button';
+import Header from '@/components/ui/header';
 import { Textarea } from '@/components/ui/textarea';
-import { useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
+import { useEffect, useState } from 'react';
+import { useForm } from 'react-hook-form';
 
-const optionsClass = [
-  {
-    value: '0',
-    label: 'Tất cả'
-  },
-  {
-    value: '1',
-    label: 'Giải tích'
-  },
-  {
-    value: '2',
-    label: 'CSDL'
-  },
-  {
-    value: '3',
-    label: 'Cấu trúc dữ liệu'
-  }
-];
+interface FormData {
+  courseName: string;
+  message: string;
+}
 export default function Notification() {
-  const [openModal, setOpenModal] = useState(false);
+  const { register, handleSubmit, setValue } = useForm<FormData>({
+    defaultValues: {
+      courseName: 'Tất cả',
+      message: ''
+    }
+  });
+  const { data: courseNameData, isLoading } = useQuery({
+    queryKey: ['courses'],
+    queryFn: () => courseApi.getCourseName()
+  });
+
+  let courseNames: string[] = courseNameData?.data.doc || ['Tất cả'];
+
+  useEffect(() => {
+    if (courseNameData) {
+      courseNames = ['Tất cả', ...courseNameData?.data.doc];
+    }
+  }, [courseNameData]);
+  const onSubmit = handleSubmit(data => {});
+
   return (
-    <>
-      <h1 className='mb-4 text-2xl font-bold uppercase text-black'>Thông báo</h1>
-      <div>
-        <label className='font-semibold' htmlFor='courses'>
-          Gửi đến:
-        </label>
-        <select
-          id='courses'
-          name='courses'
-          className='text-normal ml-2 h-9 w-40 rounded-md border border-slate-900 pl-2 text-gray-950 focus:outline-none'
-        >
-          {optionsClass.map(option => (
-            <option key={option.value} value={option.value}>
-              {option.label}
-            </option>
-          ))}
-        </select>
-      </div>
-      <label htmlFor='message' className='my-4 block font-semibold'>
-        Nội dung
-      </label>
+    <form onSubmit={onSubmit}>
+      <Header header='Thông báo' />
+      {!isLoading && (
+        <>
+          <div>
+            <label className='font-semibold' htmlFor='courses'>
+              Gửi đến:
+            </label>
+            <select
+              id='courses'
+              className='ml-2 h-8 w-36 rounded-md border border-gray-400 pl-2 text-sm font-normal text-gray-900 focus:outline-none'
+              {...register('courseName')}
+            >
+              <option value='Tất cả'>Tất cả</option>
+              {courseNames?.map((course, index) => (
+                <option key={index} value={course}>
+                  {course}
+                </option>
+              ))}
+            </select>
+          </div>
+          <label htmlFor='message' className='my-4 block font-semibold'>
+            Nội dung
+          </label>
+        </>
+      )}
       <Textarea placeholder='Nhập nội dung thông báo mới' id='message' className='h-80' />
-      <Dialog
-        isOpen={openModal}
-        setIsOpen={setOpenModal}
-        renderDialog={
-          <Modal header='Xác nhận'>
-            <>
-              <div className='text-center'>
-                Bạn đã gửi thông báo thành công! Thông báo đã được gửi qua email của các học viên
-              </div>
-              <div className='mt-4 flex justify-center gap-2'>
-                <Button variant={'outline'} onClick={() => setOpenModal(false)}>
-                  OK
-                </Button>
-              </div>
-            </>
-          </Modal>
-        }
-      >
-        <Button className='mt-2 w-24'>Gửi</Button>
-      </Dialog>
-    </>
+      <Button className='mt-4 w-32' variant={'default'}>
+        Gửi
+      </Button>
+    </form>
   );
 }

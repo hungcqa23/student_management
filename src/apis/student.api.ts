@@ -31,6 +31,17 @@ export const studentApi = {
   deleteStudent(id: string) {
     return http.delete(`/students/${id}`);
   },
+  updateStudent(body: {
+    id: string;
+    phoneNumber: string;
+    fullName: string;
+    email: string;
+    dateOfBirth: string;
+    address: string;
+    status: string;
+  }) {
+    return http.patch(`/students/${body.id}`, body);
+  },
   getStudent(id: string) {
     return http.get<
       SuccessResponse<{
@@ -57,7 +68,7 @@ export const studentApi = {
     return http.get('/students?active=false');
   },
   recoverStudent(id: string) {
-    return http.patch(`/students/recover/${id}`, {
+    return http.post(`/students/recovery/${id}`, {
       active: true
     });
   }

@@ -3,8 +3,17 @@ import { AuthResponse } from 'src/types/auth.type';
 import http from 'src/utils/http';
 
 const authApi = {
-  register(body: { email: string; password: string; confirmPassword: string; username: string }) {
-    return http.post(URL_REGISTER, { ...body, passwordConfirm: body.confirmPassword });
+  register(body: {
+    fullName: string;
+    password: string;
+    confirmPassword: string;
+    username: string;
+  }) {
+    return http.post(URL_REGISTER, {
+      ...body,
+      passwordConfirm: body.confirmPassword,
+      email: body.username
+    });
   },
   login(body: { email: string; password: string }) {
     return http.post<AuthResponse>(URL_LOGIN, body);

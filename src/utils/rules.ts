@@ -22,7 +22,8 @@ export const schema = yup.object({
     .oneOf([yup.ref('password')], 'Password confirmation must match')
     .required('Password confirmation is required')
     .min(10, 'The length of password should be 10 - 255 characters')
-    .max(255, 'The length of password should be 10 - 255 characters')
+    .max(255, 'The length of password should be 10 - 255 characters'),
+  fullName: yup.string().required('Full name is required')
 });
 
 export type Schema = yup.InferType<typeof schema>;

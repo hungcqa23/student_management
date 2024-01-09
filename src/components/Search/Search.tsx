@@ -20,7 +20,7 @@ export default function Search({
     };
   }, [onChange]);
   return (
-    <div className='flex w-72 justify-between rounded-lg border-2 border-black bg-white px-4 py-2 text-base font-normal outline-none transition duration-500'>
+    <div className='flex w-72 justify-between rounded-lg border-2 border-gray-400 bg-white px-4 py-2 text-base font-normal outline-none transition duration-500'>
       <div className='flex w-full items-center'>
         <input
           value={query}

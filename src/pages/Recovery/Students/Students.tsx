@@ -1,11 +1,10 @@
 import { studentApi } from '@/apis/student.api';
-import { columns } from '@/components/DataTable/columns';
+import { columnStudents } from '@/components/DataTable/columns';
 import { DataTable } from '@/components/DataTable/data-table';
 import { Button } from '@/components/ui/button';
 import { ReloadIcon } from '@radix-ui/react-icons';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { getCoreRowModel, useReactTable } from '@tanstack/react-table';
-import { RotateCcw, RotateCcwIcon } from 'lucide-react';
 import { useState } from 'react';
 import { toast } from 'react-toastify';
 
@@ -24,7 +23,7 @@ export default function Students() {
   const [rowSelection, setRowSelection] = useState({});
   const table = useReactTable({
     data: students,
-    columns,
+    columns: columnStudents,
     getCoreRowModel: getCoreRowModel(),
     onRowSelectionChange: setRowSelection,
     state: {
@@ -58,7 +57,7 @@ export default function Students() {
           Khôi phục
         </Button>
       </div>
-      {!isLoading && <DataTable columns={columns} data={students} table={table} />}
+      {!isLoading && <DataTable columns={columnStudents} data={students} table={table} />}
     </>
   );
 }
