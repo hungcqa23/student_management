@@ -15,6 +15,7 @@ export default function StudentInfo() {
   return (
     <>
       {isLoading && <Spinner />}
+      
       {!isLoading && (
         <div className='text-normal flex flex-col gap-2'>
           <h1 className='mb-4 text-2xl font-bold uppercase text-black'>Thông tin học viên</h1>

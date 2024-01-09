@@ -13,24 +13,20 @@ import { useState } from 'react';
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
+  table: import('@tanstack/table-core').Table<TData>;
 }
 
-export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData, TValue>) {
-  const [rowSelection, setRowSelection] = useState({});
-  const table = useReactTable({
-    data,
-    columns,
-    getCoreRowModel: getCoreRowModel(),
-    onRowSelectionChange: setRowSelection,
-    state: {
-      rowSelection
-    }
-  });
-
-  // Table
-  table.getHeaderGroups().map(headerGroup => {
-    console.log('Header: ', headerGroup.headers[0].headerGroup.headers);
-  });
+export function DataTable<TData, TValue>({ columns, data, table }: DataTableProps<TData, TValue>) {
+  // const [rowSelection, setRowSelection] = useState({});
+  // const table = useReactTable({
+  //   data,
+  //   columns,
+  //   getCoreRowModel: getCoreRowModel(),
+  //   onRowSelectionChange: setRowSelection,
+  //   state: {
+  //     rowSelection
+  //   }
+  // });
 
   return (
     <>

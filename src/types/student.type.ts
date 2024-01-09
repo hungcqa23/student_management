@@ -7,7 +7,11 @@ export interface StudentType {
   dateOfBirth: string;
   address: string;
   status: string;
-  courseId: string;
+  courseId: {
+    _id: string;
+    courseName: string;
+    courseId: string;
+  };
   active: boolean;
   updatedAt: string;
   createdAt: string;

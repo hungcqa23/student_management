@@ -17,7 +17,7 @@ import Notification from './pages/notification';
 import Grades from './pages/grade';
 import AddGrade from './pages/add_grade';
 import AddStudent from './pages/add_student';
-import Recovery from './pages/recovery';
+import Recovery from './pages/Recovery';
 import AddAttendance from './pages/add_attendance';
 import Course from './pages/course';
 import Fee from './pages/fee';

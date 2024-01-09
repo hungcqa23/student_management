@@ -52,5 +52,13 @@ export const studentApi = {
         courseId: id
       }
     });
+  },
+  getStudentRecovery() {
+    return http.get('/students?active=false');
+  },
+  recoverStudent(id: string) {
+    return http.patch(`/students/recover/${id}`, {
+      active: true
+    });
   }
 };

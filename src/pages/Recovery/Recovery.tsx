@@ -1,8 +1,7 @@
-import DemoPage from '@/components/Payments/page';
 import { Button } from '@/components/ui/button';
 import Header from '@/components/ui/header';
-import { isMatch } from 'lodash';
 import { Link, useLocation } from 'react-router-dom';
+import Students from './Students/Students';
 
 const filterButtons = [
   {
@@ -37,7 +36,8 @@ export default function Recovery() {
           </div>
         ))}
       </div>
-      <DemoPage />
+
+      {location.pathname === '/recovery/students' && <Students />}
     </>
   );
 }
