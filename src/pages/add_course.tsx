@@ -227,7 +227,7 @@ export default function AddCourse() {
                 Ngày học:
               </label>
               <select
-                className='h-9 w-32 rounded border border-gray-200 text-sm'
+                className='h-8 w-32 rounded border border-gray-200 text-sm'
                 {...register(`courseMoment.${index}.dayOfWeek`)}
               >
                 <option disabled={true} value=''>
@@ -250,7 +250,7 @@ export default function AddCourse() {
               </label>
 
               <select
-                className='h-9 w-32 rounded border border-gray-200 text-sm'
+                className='h-8 w-32 rounded border border-gray-200 text-sm'
                 {...register(`courseMoment.${index}.timeStart`)}
               >
                 <option value='' disabled>
@@ -272,7 +272,7 @@ export default function AddCourse() {
                 Giờ kết thúc:
               </label>
               <select
-                className='h-9 w-32 rounded border border-gray-200 text-sm'
+                className='h-8 w-32 rounded border border-gray-200 text-sm'
                 {...register(`courseMoment.${index}.timeEnd`)}
               >
                 <option value='' disabled>

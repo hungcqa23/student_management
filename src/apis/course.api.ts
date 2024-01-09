@@ -63,6 +63,14 @@ const courseApi = {
     return http.get<{
       doc: string[];
     }>(`/courses/course-name`);
+  },
+  getCourseIds(courseName: string) {
+    return http.get<{
+      courseIds: string[];
+    }>(`/courses/course-ids/${courseName}`);
+  },
+  notify(data: { courseName: string; message?: string; courseId?: string }) {
+    return http.post('/courses/notify', data);
   }
 };
 

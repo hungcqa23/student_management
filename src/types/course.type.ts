@@ -3,6 +3,7 @@ export interface CourseType {
   courseId: string;
   courseName: string;
   numberOfStudents: number;
+  numberOfGrades: number;
   dateOfWeeks: string[];
   dateOfEnd: string;
   dateOfStart: string;

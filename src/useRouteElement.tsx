@@ -88,7 +88,7 @@ export default function useRouteElement() {
               element: <StudentInfo />
             },
             {
-              path: path.add_student,
+              path: path.add_student + '/:id?',
               element: <AddStudent />
             },
             {

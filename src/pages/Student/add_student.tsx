@@ -74,7 +74,7 @@ export default function AddStudent() {
   });
   const student = studentData?.data.data.doc;
   useEffect(() => {
-    if (student) {
+    if (student && isUpdate) {
       setValue('fullName', student.fullName);
       setValue('email', student.email);
       setValue('phoneNumber', student.phoneNumber);

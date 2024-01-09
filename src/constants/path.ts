@@ -10,7 +10,7 @@ const path = {
   forgot_password: 'forgot-password',
   reset_password: 'reset-password',
   notifications: 'notifications',
-  add_student: 'students/add-student/:id?',
+  add_student: 'students/add-student',
   accounts: 'accounts',
   all: '*',
   id: ':id',
