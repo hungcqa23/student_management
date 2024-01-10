@@ -163,7 +163,7 @@ export default function CourseInfo() {
             <Search onChange={setFilter} query={filter} placeholder='Tìm kiếm tên học sinh...' />
             <Button variant={'outline'} asChild>
               <Link to={`/${path.add_student}?courseId=${course?._id}`}>
-                <span className='text-slate-900'>Thêm học sinh</span>
+                <span className='text-slate-900'>Thêm học viên</span>
               </Link>
             </Button>
           </div>

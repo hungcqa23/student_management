@@ -38,6 +38,9 @@ export default function Students() {
       queryClient.invalidateQueries({
         queryKey: ['students']
       });
+    },
+    onError: () => {
+      toast.error('Khôi phục thất bại. Hãy khôi phục lớp trước!!');
     }
   });
 
