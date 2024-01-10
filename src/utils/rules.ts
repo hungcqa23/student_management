@@ -3,26 +3,26 @@ import * as yup from 'yup';
 export const schema = yup.object({
   email: yup
     .string()
-    .email('Invalid email')
-    .required('Email is required')
-    .min(5, 'The length of email should be 5 - 255 characters')
-    .max(255, 'The length of email should be 5 - 255 characters'),
+    .email('Email không đúng định dạng')
+    .required('Email bắt buộc')
+    .min(5, 'Độ dài từ 5 - 255 kí tự')
+    .max(255, 'Độ dài từ 5 - 255 kí tự'),
   password: yup
     .string()
-    .required('Password is required')
-    .min(5, 'The length of password should be 5 - 255 characters')
-    .max(255, 'The length of password should be 5 - 255 characters'),
+    .required('Mật khâu bắt buộc')
+    .min(5, 'Độ dài từ 10 - 255 kí tự')
+    .max(255, 'Độ dài từ 10 - 255 kí tự'),
   username: yup
     .string()
     .required('Username is required')
-    .min(5, 'The length of username should be 5 - 100 characters')
-    .max(100, 'The length of username should be 5 - 100 characters'),
+    .min(5, 'Độ dài từ 5 - 100 kí tự')
+    .max(100, 'Độ dài từ 5 - 100 kí tự'),
   confirmPassword: yup
     .string()
     .oneOf([yup.ref('password')], 'Password confirmation must match')
-    .required('Password confirmation is required')
-    .min(10, 'The length of password should be 10 - 255 characters')
-    .max(255, 'The length of password should be 10 - 255 characters'),
+    .required('Xác thực mật khâu phải bắt buộc')
+    .min(10, 'Độ dài từ 10 - 255 kí tự')
+    .max(255, 'Độ dài từ 10 - 255 kí tự'),
   fullName: yup.string().required('Full name is required')
 });
 

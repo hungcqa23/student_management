@@ -65,7 +65,7 @@ export function DataTable<TData, TValue>({ columns, data, table }: DataTableProp
           ) : (
             <TableRow>
               <TableCell colSpan={columns.length} className='h-24 text-center'>
-                No results.
+                Không có kết quả
               </TableCell>
             </TableRow>
           )}

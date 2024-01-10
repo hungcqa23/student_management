@@ -26,7 +26,7 @@ export default function Login() {
   const onSubmit = handleSubmit(data => {
     loginMutation.mutate(data, {
       onSuccess: data => {
-        toast.success('Successfully login!', {
+        toast.success('Đăng nhập thành công', {
           position: toast.POSITION.TOP_RIGHT
         });
         setTimeout(() => {
@@ -35,7 +35,7 @@ export default function Login() {
         }, 1000);
       },
       onError: () => {
-        toast.error('Login failed!', {
+        toast.error('Đăng nhập thất bại', {
           position: toast.POSITION.TOP_RIGHT
         });
       }

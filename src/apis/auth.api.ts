@@ -27,7 +27,7 @@ const authApi = {
     return http.post(URL_FORGOT_PASSWORD, body);
   },
   resetPassword(body: { password: string; confirmPassword: string; token: string }) {
-    return http.patch(`/api/v1/users/reset-password/${body.token}`, {
+    return http.patch(`/users/reset-password/${body.token}`, {
       password: body.password,
       passwordConfirm: body.confirmPassword
     });

@@ -218,7 +218,7 @@ export default function AddStudent() {
                 <span className='text-red-500'>*</span>
               </label>
               <input
-                type='text'
+                type='number'
                 id='first_name'
                 className='block h-9 w-full rounded border border-gray-300 p-2 text-sm font-normal text-gray-900 placeholder:text-gray-500'
                 placeholder='Nhập số điện thoại...'

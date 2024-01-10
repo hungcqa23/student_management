@@ -29,7 +29,7 @@ export default function AuthLayout() {
         </div>
       </div>
       <div className='flex max-w-lg grow justify-center p-4 sm:p-7'>
-        <Outlet />d
+        <Outlet />
       </div>
     </div>
   );
