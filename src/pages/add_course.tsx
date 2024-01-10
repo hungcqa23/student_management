@@ -193,7 +193,7 @@ export default function AddCourse() {
             type='number'
             id='first_name'
             className='block h-9 w-full rounded border border-gray-300 p-2 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500'
-            placeholder='Nhập số buổi học'
+            placeholder='Nhập học phí...'
             required
             min={0}
             {...register('tuitionFee')}

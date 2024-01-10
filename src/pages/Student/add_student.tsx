@@ -223,6 +223,7 @@ export default function AddStudent() {
                 className='block h-9 w-full rounded border border-gray-300 p-2 text-sm font-normal text-gray-900 placeholder:text-gray-500'
                 placeholder='Nhập số điện thoại...'
                 required
+                min={0}
                 {...register('phoneNumber')}
               />
             </div>
