@@ -191,7 +191,9 @@ export default function CourseInfo() {
                     <TableCell>{student.fullName}</TableCell>
                     <TableCell>{student.phoneNumber}</TableCell>
                     <TableCell>{student.email}</TableCell>
-                    <TableCell>{student.status}</TableCell>
+                    <TableCell>
+                      <span>{student.status[0].toUpperCase() + student.status.slice(1)}</span>
+                    </TableCell>
                     <TableCell className='flex justify-end gap-2'>
                       <Button variant={'outline'} size='icon' asChild>
                         <Link to={`/students/${student._id}`}>

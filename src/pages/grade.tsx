@@ -80,7 +80,7 @@ export default function Grades() {
                     })}
                   </TableCell>
                   <TableCell>{course.dateOfEnd}</TableCell>
-                  <TableCell>{course.status}</TableCell>
+                  <TableCell>{course.status[0].toUpperCase() + course.status.slice(1)}</TableCell>
                   <TableCell className='text-center'>
                     <Button variant={'outline'} size='icon' asChild>
                       <Link
